@@ -1,0 +1,226 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand & Neutral Color Tokens from DESIGN.md */
+  --color-ink: #171717;
+  --color-canvas: #ffffff;
+  --color-canvas-soft: #fafafa;
+  --color-canvas-soft-2: #f5f5f5;
+  --color-hairline: #ebebeb;
+  --color-hairline-strong: #a1a1a1;
+  --color-primary: #171717;
+  --color-on-primary: #ffffff;
+  --color-body: #4d4d4d;
+  --color-mute: #888888;
+
+  --color-link: #0070f3;
+  --color-link-deep: #0761d1;
+  --color-link-bg-soft: #d3e5ff;
+  --color-success: #0070f3;
+
+  --color-error: #ee0000;
+  --color-error-soft: #f7d4d6;
+  --color-error-deep: #c50000;
+
+  --color-warning: #f5a623;
+  --color-warning-soft: #ffefcf;
+  --color-warning-deep: #ab570a;
+
+  --color-violet: #7928ca;
+  --color-violet-soft: #d8ccf1;
+  --color-violet-deep: #4c2889;
+
+  --color-cyan: #50e3c2;
+  --color-cyan-soft: #aaffec;
+  --color-cyan-deep: #29bc9b;
+
+  --color-highlight-pink: #ff0080;
+  --color-highlight-magenta: #eb367f;
+
+  --color-gradient-develop-start: #007cf0;
+  --color-gradient-develop-end: #00dfd8;
+  --color-gradient-preview-start: #7928ca;
+  --color-gradient-preview-end: #ff0080;
+  --color-gradient-ship-start: #ff4d4d;
+  --color-gradient-ship-end: #f9cb28;
+
+  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  /* Custom elevation stacked shadows from DESIGN.md */
+  --shadow-level-1: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+  --shadow-level-2: 0px 1px 1px rgba(0, 0, 0, 0.02), 0px 2px 2px rgba(0, 0, 0, 0.04), inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+  --shadow-level-3: 0px 2px 2px rgba(0, 0, 0, 0.03), 0px 8px 8px -8px rgba(0, 0, 0, 0.04), inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+  --shadow-level-4: 0px 2px 2px rgba(0, 0, 0, 0.04), 0px 8px 16px -4px rgba(0, 0, 0, 0.04), inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+  --shadow-level-5: 0px 1px 1px rgba(0, 0, 0, 0.02), 0px 8px 16px -4px rgba(0, 0, 0, 0.04), 0px 24px 32px -8px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+
+  /* Border radius scale from DESIGN.md */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill-sm: 64px;
+  --radius-pill: 100px;
+}
+
+/* Custom class-based dark mode variant for Tailwind v4 */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Polarity flipped tokens under dark class */
+.dark {
+  --color-ink: #ffffff;
+  --color-canvas: #0a0a0a;
+  --color-canvas-soft: #0e0e0e;
+  --color-canvas-soft-2: #141414;
+  --color-hairline: #1f1f1f;
+  --color-hairline-strong: #3f3f3f;
+  --color-primary: #ffffff;
+  --color-on-primary: #000000;
+  --color-body: #a0a0a0;
+  --color-mute: #666666;
+
+  /* Stacked shadows adapted for dark background */
+  --shadow-level-1: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --shadow-level-2: 0px 1px 1px rgba(0, 0, 0, 0.2), 0px 2px 2px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --shadow-level-3: 0px 2px 4px rgba(0, 0, 0, 0.3), 0px 8px 8px -8px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --shadow-level-4: 0px 4px 8px rgba(0, 0, 0, 0.3), 0px 16px 24px -8px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --shadow-level-5: 0px 1px 1px rgba(0, 0, 0, 0.2), 0px 8px 24px rgba(0, 0, 0, 0.4), 0px 24px 48px -12px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-canvas-soft);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  transition: background-color 0.2s ease, color 0.2s ease;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-hairline-strong);
+  border-radius: var(--radius-pill-sm);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-mute);
+}
+
+/* Beautiful Animated Ambient Mesh Gradient from DESIGN.md description */
+.mesh-gradient-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60vh;
+  z-index: 0;
+  opacity: 0.15;
+  filter: blur(100px);
+  pointer-events: none;
+  background-image: 
+    radial-gradient(at 10% 20%, var(--color-gradient-develop-start) 0px, transparent 50%),
+    radial-gradient(at 90% 10%, var(--color-gradient-preview-end) 0px, transparent 50%),
+    radial-gradient(at 50% 80%, var(--color-gradient-ship-start) 0px, transparent 50%),
+    radial-gradient(at 20% 90%, var(--color-cyan) 0px, transparent 50%);
+  transition: opacity 0.5s ease;
+}
+
+.dark .mesh-gradient-container {
+  opacity: 0.08;
+}
+
+/* Custom styles for rich text editor interactive elements */
+.prose-editor {
+  outline: none;
+}
+
+.prose-editor h1 {
+  font-size: 1.875rem;
+  font-weight: 600;
+  line-height: 1.25;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.025em;
+}
+
+.prose-editor h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.25;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.prose-editor p {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.prose-editor ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose-editor ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose-editor blockquote {
+  border-left: 3px solid var(--color-hairline-strong);
+  padding-left: 1rem;
+  font-style: italic;
+  color: var(--color-body);
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose-editor code {
+  font-family: var(--font-mono);
+  background-color: var(--color-canvas-soft-2);
+  padding: 0.2rem 0.4rem;
+  border-radius: var(--radius-xs);
+  font-size: 0.875rem;
+}
+
+.prose-editor pre {
+  font-family: var(--font-mono);
+  background-color: var(--color-canvas-soft-2);
+  padding: 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  overflow-x: auto;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid var(--color-hairline);
+}
+
+.prose-editor .checkbox-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.prose-editor .checkbox-item input[type="checkbox"] {
+  margin-top: 0.35rem;
+  cursor: pointer;
+}

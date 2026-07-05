@@ -1,11 +1,345 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import { BookOpen, Cpu, Percent, Languages, Pin, Heart, Terminal, ArrowRight, Check } from 'lucide-react';
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="NoteBook. - Personal Study Notes for Developers & Academics">
+	<!-- Navbar -->
+	<header class="sticky top-0 z-50 h-16 border-b border-hairline bg-canvas/80 backdrop-blur-md">
+		<div class="max-w-[1400px] h-full mx-auto px-6 flex items-center justify-between">
+			<!-- Logo -->
+			<div class="flex items-center gap-2">
+				<div class="w-6 h-6 bg-primary text-on-primary flex items-center justify-center rounded-sm text-xs font-bold font-mono">
+					N
+				</div>
+				<span class="text-sm font-semibold tracking-tight text-ink font-sans">NoteBook.</span>
+			</div>
+
+			<!-- Nav links -->
+			<nav class="hidden md:flex items-center gap-6">
+				<a href="#features" class="text-xs text-body hover:text-ink transition-colors font-medium">Features</a>
+				<a href="#pricing" class="text-xs text-body hover:text-ink transition-colors font-medium">Pricing</a>
+				<a href="https://github.com" target="_blank" class="text-xs text-body hover:text-ink transition-colors font-medium">Open Source</a>
+			</nav>
+
+			<!-- Action buttons -->
+			<div class="flex items-center gap-3">
+				<a href="/login" class="text-xs font-semibold text-body hover:text-ink transition-colors px-3 py-1.5 rounded-sm">
+					Log In
+				</a>
+				<a href="/signup" class="text-xs font-semibold bg-primary text-on-primary hover:opacity-90 transition-opacity px-4 py-1.5 rounded-sm shadow-level-2">
+					Sign Up
+				</a>
+			</div>
+		</div>
+	</header>
+
+	<!-- Main Body Wrapper -->
+	<main class="relative min-h-screen bg-canvas-soft">
+		<!-- Atmospheric Background Mesh Gradient -->
+		<div class="mesh-gradient-container"></div>
+
+		<!-- Hero Section -->
+		<section class="relative max-w-[1200px] mx-auto px-6 pt-24 pb-16 text-center z-10">
+			<!-- Announcement Eyebrow -->
+			<div class="inline-flex items-center gap-2 px-3 py-1 bg-link-bg-soft border border-[#d3e5ff]/30 text-link-deep text-[11px] font-mono rounded-full mb-6">
+				<span class="flex h-1.5 w-1.5 rounded-full bg-link animate-pulse"></span>
+				Introducing NoteBook 1.0.
+			</div>
+
+			<!-- Headline: sentence-case, negative tracking, period terminated -->
+			<h1 class="text-4xl sm:text-6xl font-semibold text-ink tracking-[-0.04em] leading-[1.05] max-w-3xl mx-auto mb-6">
+				Organize your academic mind. Keep study notes clean.
+			</h1>
+
+			<!-- Lead paragraph -->
+			<p class="text-base sm:text-lg text-body max-w-2xl mx-auto leading-relaxed mb-8">
+				A minimalist study notes manager inspired by Notion's clarity and Vercel's precision. 
+				Write markdown notes, categorize by subjects with colors and icons, and search instantly.
+			</p>
+
+			<!-- CTAs: marketing pill buttons -->
+			<div class="flex flex-col sm:flex-row items-center justify-center gap-3 mb-16">
+				<a href="/signup" class="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3 bg-primary text-on-primary rounded-full hover:opacity-90 active:scale-[0.98] transition-all font-semibold text-sm h-12 shadow-level-3 cursor-pointer">
+					Start Writing Free
+					<ArrowRight size={16} />
+				</a>
+				<a href="#features" class="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3 bg-canvas text-ink border border-hairline rounded-full hover:bg-canvas-soft-2 transition-colors font-semibold text-sm h-12 shadow-level-1 cursor-pointer">
+					Explore Features
+				</a>
+			</div>
+
+			<!-- Premium Application Shell Mockup Frame -->
+			<div class="max-w-4xl mx-auto rounded-lg border border-hairline bg-canvas shadow-level-4 overflow-hidden animate-slide-up select-none">
+				<div class="h-10 border-b border-hairline bg-canvas-soft flex items-center px-4 justify-between">
+					<div class="flex items-center gap-1.5">
+						<span class="w-3 h-3 rounded-full bg-hairline-strong/40"></span>
+						<span class="w-3 h-3 rounded-full bg-hairline-strong/40"></span>
+						<span class="w-3 h-3 rounded-full bg-hairline-strong/40"></span>
+					</div>
+					<div class="px-4 py-0.5 bg-canvas-soft-2 border border-hairline rounded-sm text-[10px] font-mono text-mute">
+						notebook.app/dashboard
+					</div>
+					<div class="w-12"></div>
+				</div>
+				<div class="grid grid-cols-4 aspect-[16/10] min-h-[300px]">
+					<!-- Mock Sidebar -->
+					<div class="col-span-1 border-r border-hairline bg-canvas-soft p-3 text-left space-y-4">
+						<div class="flex items-center gap-2 border-b border-hairline pb-3">
+							<div class="w-5 h-5 rounded bg-primary text-on-primary flex items-center justify-center text-[10px] font-mono font-bold">N</div>
+							<div class="text-[11px] font-semibold text-ink leading-none">Jane Doe</div>
+						</div>
+						<div class="space-y-1.5">
+							<div class="text-[9px] font-mono uppercase tracking-wider text-mute">Subjects</div>
+							<div class="flex items-center gap-2 px-2 py-1 bg-canvas border border-hairline rounded-sm text-[11px] text-ink font-semibold">
+								<div class="w-2 h-2 rounded-full bg-violet"></div>
+								Computer Science
+							</div>
+							<div class="flex items-center gap-2 px-2 py-1 text-[11px] text-body">
+								<div class="w-2 h-2 rounded-full bg-link"></div>
+								Mathematics
+							</div>
+							<div class="flex items-center gap-2 px-2 py-1 text-[11px] text-body">
+								<div class="w-2 h-2 rounded-full bg-warning"></div>
+								Modern History
+							</div>
+						</div>
+					</div>
+					<!-- Mock List -->
+					<div class="col-span-1 border-r border-hairline bg-canvas p-3 text-left space-y-3">
+						<div class="text-[9px] font-mono uppercase tracking-wider text-mute pb-1 border-b border-hairline">Notes list</div>
+						<div class="p-2 bg-canvas-soft border-l-2 border-l-primary rounded-sm space-y-1">
+							<div class="text-[11px] font-bold text-ink leading-tight">Tailwind CSS v4 Notes</div>
+							<div class="text-[9px] text-body line-clamp-1">Vite integration config...</div>
+						</div>
+						<div class="p-2 space-y-1">
+							<div class="text-[11px] text-ink leading-tight">Calculus Limits Proof</div>
+							<div class="text-[9px] text-mute line-clamp-1">Review epsilon-delta...</div>
+						</div>
+					</div>
+					<!-- Mock Editor -->
+					<div class="col-span-2 p-4 text-left space-y-3">
+						<div class="h-6 border-b border-hairline flex items-center justify-between text-[10px] text-mute">
+							<span>Computer Science / CSS v4</span>
+							<span class="text-link">Saved</span>
+						</div>
+						<div class="text-lg font-semibold text-ink">Tailwind CSS v4 Notes</div>
+						<div class="text-[11px] text-body leading-relaxed space-y-2 font-mono bg-canvas-soft-2 p-3 rounded border border-hairline">
+							<p class="text-[#7928ca]">// Entry point configuration</p>
+							<p>@import "tailwindcss";</p>
+							<p>@theme &#123;</p>
+							<p class="pl-4">--color-brand: #0070f3;</p>
+							<p>&#125;</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Logo Strip Section -->
+		<section class="border-y border-hairline bg-canvas/40 py-8 select-none z-10 relative">
+			<div class="max-w-[1200px] mx-auto px-6 text-center">
+				<p class="text-[10px] font-mono uppercase tracking-wider text-mute mb-4">
+					Powering note taking for builders at
+				</p>
+				<div class="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 opacity-60 grayscale hover:opacity-80 transition-opacity">
+					<span class="text-sm font-semibold tracking-tighter text-ink font-sans">VERCEL</span>
+					<span class="text-sm font-semibold tracking-tighter text-ink font-sans">NEXT.JS</span>
+					<span class="text-sm font-semibold tracking-tighter text-ink font-sans">ASTRO</span>
+					<span class="text-sm font-semibold tracking-tighter text-ink font-sans">GITHUB</span>
+					<span class="text-sm font-semibold tracking-tighter text-ink font-sans">NOTION</span>
+				</div>
+			</div>
+		</section>
+
+		<!-- Features Grid Section -->
+		<section id="features" class="max-w-[1200px] mx-auto px-6 py-24 z-10 relative">
+			<div class="text-center max-w-xl mx-auto mb-16">
+				<span class="text-xs font-mono uppercase tracking-wider text-link font-semibold">Features</span>
+				<h2 class="text-2xl sm:text-3xl font-semibold tracking-tight text-ink mt-2 mb-4">
+					Engineered for focused study sessions.
+				</h2>
+				<p class="text-xs sm:text-sm text-body leading-relaxed">
+					Every utility and visual cue has been styled to reduce distraction and make writing study material intuitive and fast.
+				</p>
+			</div>
+
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+				<!-- Card 1 -->
+				<div class="bg-canvas border border-hairline p-6 rounded-md shadow-level-2 space-y-4">
+					<div class="w-8 h-8 rounded-full bg-canvas-soft-2 flex items-center justify-center text-primary border border-hairline">
+						<Cpu size={16} />
+					</div>
+					<h3 class="text-base font-semibold text-ink tracking-tight">Structured Subjects.</h3>
+					<p class="text-xs text-body leading-relaxed">
+						Keep notes organized into colored sub-folders. Customize subjects with beautiful preset icon symbols and border accent triggers.
+					</p>
+				</div>
+				<!-- Card 2 -->
+				<div class="bg-canvas border border-hairline p-6 rounded-md shadow-level-2 space-y-4">
+					<div class="w-8 h-8 rounded-full bg-canvas-soft-2 flex items-center justify-center text-primary border border-hairline">
+						<Terminal size={16} />
+					</div>
+					<h3 class="text-base font-semibold text-ink tracking-tight">Instant Command Search.</h3>
+					<p class="text-xs text-body leading-relaxed">
+						Access a global command menu instantly using ⌘K. Query across titles, subjects, and text content in real-time.
+					</p>
+				</div>
+				<!-- Card 3 -->
+				<div class="bg-canvas border border-hairline p-6 rounded-md shadow-level-2 space-y-4">
+					<div class="w-8 h-8 rounded-full bg-canvas-soft-2 flex items-center justify-center text-primary border border-hairline">
+						<Languages size={16} />
+					</div>
+					<h3 class="text-base font-semibold text-ink tracking-tight">Autosaving Rich Text.</h3>
+					<p class="text-xs text-body leading-relaxed">
+						Never lose study notes again. Typings are saved automatically in the background. Structure text using standard formatting controls.
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Pricing Section -->
+		<section id="pricing" class="max-w-[1200px] mx-auto px-6 py-24 border-t border-hairline z-10 relative">
+			<div class="text-center max-w-xl mx-auto mb-16">
+				<span class="text-xs font-mono uppercase tracking-wider text-link font-semibold font-mono">Pricing</span>
+				<h2 class="text-2xl sm:text-3xl font-semibold tracking-tight text-ink mt-2 mb-4">
+					Simple, transparent plans.
+				</h2>
+				<p class="text-xs sm:text-sm text-body leading-relaxed">
+					Take personal study notes for free, or unlock advanced capabilities for study groups.
+				</p>
+			</div>
+
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+				<!-- Hobby Card -->
+				<div class="bg-canvas border border-hairline p-8 rounded-lg shadow-level-2 flex flex-col justify-between h-[450px]">
+					<div class="space-y-6">
+						<div>
+							<h3 class="text-lg font-semibold text-ink tracking-tight">Hobby</h3>
+							<p class="text-xs text-body mt-1">For individuals starting out.</p>
+						</div>
+						<div class="flex items-baseline text-ink">
+							<span class="text-4xl font-semibold tracking-tight">$0</span>
+							<span class="text-xs text-mute ml-1">/month</span>
+						</div>
+						<ul class="space-y-3 text-xs text-body">
+							<li class="flex items-center gap-2"><Check size={14} class="text-link" /> Unlimited study notes</li>
+							<li class="flex items-center gap-2"><Check size={14} class="text-link" /> 3 customizable subjects</li>
+							<li class="flex items-center gap-2"><Check size={14} class="text-link" /> Local autosave</li>
+							<li class="flex items-center gap-2"><Check size={14} class="text-link" /> Global command search</li>
+						</ul>
+					</div>
+					<a href="/signup" class="w-full text-center py-2 px-4 border border-hairline hover:bg-canvas-soft-2 rounded-full font-medium text-xs h-9 transition-colors cursor-pointer flex items-center justify-center">
+						Get Started
+					</a>
+				</div>
+
+				<!-- Pro Card: Polarity Flipped (Ink background, white text) -->
+				<div class="bg-primary text-on-primary p-8 rounded-lg shadow-level-4 flex flex-col justify-between h-[450px] relative overflow-hidden border border-primary">
+					<div class="absolute top-0 right-0 bg-link text-white text-[9px] font-mono uppercase tracking-wider py-1 px-3 rounded-bl-sm">
+						Popular
+					</div>
+					<div class="space-y-6">
+						<div>
+							<h3 class="text-lg font-semibold text-on-primary tracking-tight">Pro</h3>
+							<p class="text-xs text-on-primary/70 mt-1">For students who want it all.</p>
+						</div>
+						<div class="flex items-baseline text-on-primary">
+							<span class="text-4xl font-semibold tracking-tight">$5</span>
+							<span class="text-xs text-on-primary/60 ml-1">/month</span>
+						</div>
+						<ul class="space-y-3 text-xs text-on-primary/80">
+							<li class="flex items-center gap-2"><Check size={14} class="text-link" /> Everything in Hobby</li>
+							<li class="flex items-center gap-2"><Check size={14} class="text-link" /> Unlimited subjects</li>
+							<li class="flex items-center gap-2"><Check size={14} class="text-link" /> Pin & Favorite highlights</li>
+							<li class="flex items-center gap-2"><Check size={14} class="text-link" /> Full PDF note exports</li>
+							<li class="flex items-center gap-2"><Check size={14} class="text-link" /> Multi-device Sync</li>
+						</ul>
+					</div>
+					<a href="/signup" class="w-full text-center py-2 px-4 bg-canvas text-ink hover:opacity-90 rounded-full font-medium text-xs h-9 transition-all cursor-pointer flex items-center justify-center active:scale-[0.98]">
+						Upgrade to Pro
+					</a>
+				</div>
+
+				<!-- Enterprise Card -->
+				<div class="bg-canvas border border-hairline p-8 rounded-lg shadow-level-2 flex flex-col justify-between h-[450px]">
+					<div class="space-y-6">
+						<div>
+							<h3 class="text-lg font-semibold text-ink tracking-tight">Enterprise</h3>
+							<p class="text-xs text-body mt-1">For universities & institutions.</p>
+						</div>
+						<div class="flex items-baseline text-ink">
+							<span class="text-4xl font-semibold tracking-tight">Custom</span>
+						</div>
+						<ul class="space-y-3 text-xs text-body">
+							<li class="flex items-center gap-2"><Check size={14} class="text-link" /> Everything in Pro</li>
+							<li class="flex items-center gap-2"><Check size={14} class="text-link" /> Institutional SSO (SAML)</li>
+							<li class="flex items-center gap-2"><Check size={14} class="text-link" /> Custom domain integrations</li>
+							<li class="flex items-center gap-2"><Check size={14} class="text-link" /> Dedicated account support</li>
+						</ul>
+					</div>
+					<a href="mailto:support@notebook.app" class="w-full text-center py-2 px-4 border border-hairline hover:bg-canvas-soft-2 rounded-full font-medium text-xs h-9 transition-colors cursor-pointer flex items-center justify-center">
+						Contact Sales
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<!-- Bottom Call-To-Action -->
+		<section class="max-w-[1200px] mx-auto px-6 py-24 text-center border-t border-hairline z-10 relative">
+			<h2 class="text-3xl sm:text-4xl font-semibold text-ink tracking-tight max-w-lg mx-auto mb-4">
+				Start keeping neat notes. Free forever.
+			</h2>
+			<p class="text-xs sm:text-sm text-body max-w-sm mx-auto mb-8 leading-relaxed">
+				Join thousands of students and developers organizing their thoughts cleanly.
+			</p>
+			<a href="/signup" class="inline-flex items-center justify-center gap-2 px-8 py-3 bg-primary text-on-primary rounded-full hover:opacity-90 active:scale-[0.98] transition-all font-semibold text-sm h-12 shadow-level-3 cursor-pointer">
+				Create Free Workspace
+				<ArrowRight size={16} />
+			</a>
+		</section>
+	</main>
+
+	<!-- Footer: mono eyebrows, clear grid links -->
+	<footer class="border-t border-hairline bg-canvas py-16 select-none z-10 relative">
+		<div class="max-w-[1200px] mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
+			<!-- Col 1 -->
+			<div class="space-y-3">
+				<h4 class="text-[10px] font-mono uppercase tracking-wider text-ink font-semibold">Resources</h4>
+				<ul class="space-y-2 text-xs text-body">
+					<li><a href="#" class="hover:text-ink transition-colors">Documentation</a></li>
+					<li><a href="#" class="hover:text-ink transition-colors">Release Notes</a></li>
+					<li><a href="#" class="hover:text-ink transition-colors">Design System</a></li>
+				</ul>
+			</div>
+			<!-- Col 2 -->
+			<div class="space-y-3">
+				<h4 class="text-[10px] font-mono uppercase tracking-wider text-ink font-semibold">Community</h4>
+				<ul class="space-y-2 text-xs text-body">
+					<li><a href="#" class="hover:text-ink transition-colors">GitHub Repository</a></li>
+					<li><a href="#" class="hover:text-ink transition-colors">Discord Server</a></li>
+					<li><a href="#" class="hover:text-ink transition-colors">Twitter / X</a></li>
+				</ul>
+			</div>
+			<!-- Col 3 -->
+			<div class="space-y-3">
+				<h4 class="text-[10px] font-mono uppercase tracking-wider text-ink font-semibold">Legal</h4>
+				<ul class="space-y-2 text-xs text-body">
+					<li><a href="#" class="hover:text-ink transition-colors">Privacy Policy</a></li>
+					<li><a href="#" class="hover:text-ink transition-colors">Terms of Service</a></li>
+					<li><a href="#" class="hover:text-ink transition-colors">Cookies Settings</a></li>
+				</ul>
+			</div>
+			<!-- Col 4 -->
+			<div class="space-y-4">
+				<div class="flex items-center gap-2">
+					<div class="w-5 h-5 bg-primary text-on-primary flex items-center justify-center rounded-sm text-[10px] font-mono font-bold">N</div>
+					<span class="text-xs font-semibold tracking-tight text-ink">NoteBook.</span>
+				</div>
+				<p class="text-[10px] text-mute font-mono">
+					&copy; 2026 NoteBook Inc. All rights reserved.
+				</p>
+			</div>
+		</div>
+	</footer>
 </Layout>

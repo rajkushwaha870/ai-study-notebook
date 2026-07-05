@@ -1,0 +1,10 @@
+---
+import Layout from '../layouts/Layout.astro';
+import DashboardComponent from '../components/dashboard/Dashboard';
+---
+
+<Layout title="Dashboard - NoteBook.">
+  <main class="h-screen w-screen overflow-hidden">
+    <DashboardComponent client:only="react" />
+  </main>
+</Layout>
