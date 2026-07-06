@@ -56,6 +56,26 @@ export default function Dashboard() {
       setSubjects(db.getSubjects(user.id));
       setNotes(db.getNotes(user.id));
       setFiles(db.getFiles(user.id));
+
+      // Parse query params for filters/subjects
+      const params = new URLSearchParams(window.location.search);
+      const filterParam = params.get('filter');
+      const subjectParam = params.get('subject');
+      
+      if (subjectParam) {
+        setActiveSubjectId(subjectParam);
+        setActiveFilter('all');
+        setActiveTab('notes');
+      } else if (filterParam) {
+        setActiveFilter(filterParam);
+        setActiveSubjectId(null);
+        if (filterParam === 'all-files' || filterParam === 'recent-files' || filterParam === 'trash') {
+          setActiveTab('files');
+        } else {
+          setActiveTab('notes');
+        }
+      }
+
       setAuthChecked(true);
     }
   }, []);

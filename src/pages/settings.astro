@@ -1,0 +1,10 @@
+---
+import Layout from '../layouts/Layout.astro';
+import AISettingsComponent from '../components/ai/AISettings';
+---
+
+<Layout title="AI Settings - NoteBook.">
+  <main class="h-screen w-screen overflow-hidden">
+    <AISettingsComponent client:only="react" />
+  </main>
+</Layout>

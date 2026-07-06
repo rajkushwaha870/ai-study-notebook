@@ -2,7 +2,8 @@ import React from 'react';
 import { 
   LogOut, Plus, Heart, Pin, BookOpen, Cpu, Percent, 
   Languages, GraduationCap, Award, Calendar, Lightbulb, 
-  Settings, FolderPlus, List, ChevronLeft, User2, Folder, Clock, Trash2
+  Settings, FolderPlus, List, ChevronLeft, User2, Folder, Clock, Trash2,
+  Sparkles, Bot
 } from 'lucide-react';
 import type { Subject, User } from '../../utils/db';
 
@@ -43,11 +44,19 @@ export default function Sidebar({
 }: SidebarProps) {
 
   const handleFilterClick = (filter: string) => {
+    if (typeof window !== 'undefined' && window.location.pathname !== '/dashboard') {
+      window.location.href = `/dashboard?filter=${filter}`;
+      return;
+    }
     onSelectFilter(filter);
     onSelectSubject(null);
   };
 
   const handleSubjectClick = (id: string) => {
+    if (typeof window !== 'undefined' && window.location.pathname !== '/dashboard') {
+      window.location.href = `/dashboard?subject=${id}`;
+      return;
+    }
     onSelectSubject(id);
   };
 
@@ -175,6 +184,40 @@ export default function Sidebar({
         >
           <Trash2 size={16} className="shrink-0 text-mute" />
           {!isCollapsed && <span>Trash</span>}
+        </button>
+
+        {/* AI Tools section */}
+        {!isCollapsed && (
+          <div className="px-3 pt-3 mb-1.5 text-[9px] font-mono uppercase tracking-wider text-mute">
+            AI Tools
+          </div>
+        )}
+        <button
+          onClick={() => {
+            if (typeof window !== 'undefined') window.location.href = '/ai';
+          }}
+          className={`w-full flex items-center gap-3 px-3 py-2 rounded-sm text-xs font-medium transition-all cursor-pointer ${
+            typeof window !== 'undefined' && window.location.pathname === '/ai'
+              ? 'bg-canvas-soft border border-hairline font-semibold shadow-level-1 text-ink'
+              : 'hover:bg-canvas-soft-2 border border-transparent text-body hover:text-ink'
+          }`}
+        >
+          <Sparkles size={16} className={`shrink-0 ${typeof window !== 'undefined' && window.location.pathname === '/ai' ? 'text-violet' : 'text-mute'}`} />
+          {!isCollapsed && <span>AI Assistant</span>}
+        </button>
+
+        <button
+          onClick={() => {
+            if (typeof window !== 'undefined') window.location.href = '/settings';
+          }}
+          className={`w-full flex items-center gap-3 px-3 py-2 rounded-sm text-xs font-medium transition-all cursor-pointer ${
+            typeof window !== 'undefined' && window.location.pathname === '/settings'
+              ? 'bg-canvas-soft border border-hairline font-semibold shadow-level-1 text-ink'
+              : 'hover:bg-canvas-soft-2 border border-transparent text-body hover:text-ink'
+          }`}
+        >
+          <Bot size={16} className={`shrink-0 ${typeof window !== 'undefined' && window.location.pathname === '/settings' ? 'text-violet' : 'text-mute'}`} />
+          {!isCollapsed && <span>AI Settings</span>}
         </button>
       </div>
 

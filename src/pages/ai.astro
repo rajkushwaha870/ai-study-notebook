@@ -1,0 +1,10 @@
+---
+import Layout from '../layouts/Layout.astro';
+import AIAssistantComponent from '../components/ai/AIAssistant';
+---
+
+<Layout title="AI Assistant - NoteBook.">
+  <main class="h-screen w-screen overflow-hidden">
+    <AIAssistantComponent client:only="react" />
+  </main>
+</Layout>
