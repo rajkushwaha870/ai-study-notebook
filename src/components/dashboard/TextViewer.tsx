@@ -23,6 +23,17 @@ export default function TextViewer({
       return;
     }
 
+    if (dataUrl.startsWith('http://') || dataUrl.startsWith('https://') || dataUrl.startsWith('blob:')) {
+      fetch(dataUrl)
+        .then((res) => res.text())
+        .then((txt) => setText(txt))
+        .catch((err) => {
+          console.error(err);
+          setText('Failed to load text content.');
+        });
+      return;
+    }
+
     try {
       const base64Content = dataUrl.includes(',') ? dataUrl.split(',')[1] : dataUrl;
       const decodedText = atob(base64Content);

@@ -11,7 +11,7 @@ import FileManager from './FileManager';
 import ImageViewer from './ImageViewer';
 import PdfViewer from './PdfViewer';
 import TextViewer from './TextViewer';
-import { saveFileContent, getFileContent, deleteFileContent } from '../../utils/indexedDB';
+// saveFileContent, getFileContent, deleteFileContent migrated to db
 import { ArrowLeft } from 'lucide-react';
 
 export default function Dashboard() {
@@ -46,64 +46,81 @@ export default function Dashboard() {
 
   // Check auth on mount
   useEffect(() => {
-    const user = db.getCurrentUser();
-    if (!user) {
-      window.location.href = '/login';
-    } else {
-      setCurrentUser(user);
-      // Initialize database items
-      db.seedUserContent(user.id);
-      setSubjects(db.getSubjects(user.id));
-      setNotes(db.getNotes(user.id));
-      setFiles(db.getFiles(user.id));
+    const initDashboard = async () => {
+      const user = await db.getCurrentUserAsync();
+      if (!user) {
+        window.location.href = '/login';
+      } else {
+        setCurrentUser(user);
+        // Seed content if first time
+        await db.seedUserContent(user.id);
+        // Fetch subjects, notes, files
+        const [subs, nts, fls] = await Promise.all([
+          db.getSubjects(user.id),
+          db.getNotes(user.id),
+          db.getFiles(user.id),
+      ]);
+        setSubjects(subs);
+        setNotes(nts);
+        setFiles(fls);
 
-      // Parse query params for filters/subjects
-      const params = new URLSearchParams(window.location.search);
-      const filterParam = params.get('filter');
-      const subjectParam = params.get('subject');
-      
-      if (subjectParam) {
-        setActiveSubjectId(subjectParam);
-        setActiveFilter('all');
-        setActiveTab('notes');
-      } else if (filterParam) {
-        setActiveFilter(filterParam);
-        setActiveSubjectId(null);
-        if (filterParam === 'all-files' || filterParam === 'recent-files' || filterParam === 'trash') {
-          setActiveTab('files');
-        } else {
+        // Parse query params for filters/subjects
+        const params = new URLSearchParams(window.location.search);
+        const filterParam = params.get('filter');
+        const subjectParam = params.get('subject');
+        
+        if (subjectParam) {
+          setActiveSubjectId(subjectParam);
+          setActiveFilter('all');
           setActiveTab('notes');
+        } else if (filterParam) {
+          setActiveFilter(filterParam);
+          setActiveSubjectId(null);
+          if (filterParam === 'all-files' || filterParam === 'recent-files' || filterParam === 'trash') {
+            setActiveTab('files');
+          } else {
+            setActiveTab('notes');
+          }
         }
-      }
 
-      setAuthChecked(true);
-    }
+        setAuthChecked(true);
+      }
+    };
+    initDashboard();
   }, []);
 
   // Fetch items helper
-  const refreshData = () => {
+  const refreshData = async () => {
     if (currentUser) {
-      setSubjects(db.getSubjects(currentUser.id));
-      setNotes(db.getNotes(currentUser.id));
-      setFiles(db.getFiles(currentUser.id));
+      const [subs, nts, fls] = await Promise.all([
+        db.getSubjects(currentUser.id),
+        db.getNotes(currentUser.id),
+        db.getFiles(currentUser.id),
+      ]);
+      setSubjects(subs);
+      setNotes(nts);
+      setFiles(fls);
     }
   };
 
   // Sync state if notes/subjects deletion happened
   useEffect(() => {
-    if (currentUser) {
-      const currentSubjects = db.getSubjects(currentUser.id);
-      // Verify active subject exists
-      if (activeSubjectId && !currentSubjects.find(s => s.id === activeSubjectId)) {
-        setActiveSubjectId(null);
+    const syncSelections = async () => {
+      if (currentUser) {
+        const currentSubjects = await db.getSubjects(currentUser.id);
+        // Verify active subject exists
+        if (activeSubjectId && !currentSubjects.find(s => s.id === activeSubjectId)) {
+          setActiveSubjectId(null);
+        }
+        
+        const currentNotes = await db.getNotes(currentUser.id);
+        // Verify active note exists
+        if (activeNoteId && !currentNotes.find(n => n.id === activeNoteId)) {
+          setActiveNoteId(null);
+        }
       }
-      
-      const currentNotes = db.getNotes(currentUser.id);
-      // Verify active note exists
-      if (activeNoteId && !currentNotes.find(n => n.id === activeNoteId)) {
-        setActiveNoteId(null);
-      }
-    }
+    };
+    syncSelections();
   }, [notes, subjects]);
 
   if (!authChecked || !currentUser) {
@@ -183,7 +200,7 @@ export default function Dashboard() {
     setActiveNoteId(id);
   };
 
-  const handleAddNote = () => {
+  const handleAddNote = async () => {
     // Determine subject to bind to
     let subId = activeSubjectId;
     if (!subId) {
@@ -196,25 +213,37 @@ export default function Dashboard() {
       }
     }
 
-    const newNote = db.addNote(currentUser.id, subId, 'Untitled Note', '');
-    refreshData();
-    setActiveNoteId(newNote.id);
+    try {
+      const newNote = await db.addNote(currentUser.id, subId, 'Untitled Note', '');
+      await refreshData();
+      setActiveNoteId(newNote.id);
+    } catch (err) {
+      console.error('Failed to add note', err);
+    }
   };
 
-  const handleUpdateNote = (id: string, updates: Partial<Note>) => {
-    db.updateNote(id, updates);
+  const handleUpdateNote = async (id: string, updates: Partial<Note>) => {
     // Update local state list directly to prevent full re-fetching lag
     setNotes((prevNotes) =>
       prevNotes.map((note) => (note.id === id ? { ...note, ...updates, updatedAt: new Date().toISOString() } : note))
     );
+    try {
+      await db.updateNote(id, updates);
+    } catch (err) {
+      console.error('Failed to update note', err);
+    }
   };
 
-  const handleDeleteNote = () => {
+  const handleDeleteNote = async () => {
     if (activeNoteId) {
       if (confirm('Are you sure you want to delete this note?')) {
-        db.deleteNote(activeNoteId);
-        setActiveNoteId(null);
-        refreshData();
+        try {
+          await db.deleteNote(activeNoteId);
+          setActiveNoteId(null);
+          await refreshData();
+        } catch (err) {
+          console.error('Failed to delete note', err);
+        }
       }
     }
   };
@@ -231,9 +260,10 @@ export default function Dashboard() {
     }
   };
 
-  const handleLogout = () => {
-    if (confirm('Are you sure you want to logout?')) {
-      db.clearCurrentUser();
+  const handleLogout = async () => {
+    const shouldBypass = typeof window !== 'undefined' && window.location.search.includes('bypass_confirm=true');
+    if (shouldBypass || confirm('Are you sure you want to logout?')) {
+      await db.clearCurrentUser();
       window.location.href = '/login';
     }
   };
@@ -278,8 +308,8 @@ export default function Dashboard() {
           reader.readAsDataURL(file);
         });
 
-        // 1. Create file record in localstorage metadata
-        const newFile = db.addFileMetadata(
+        // 1. Create file record in database
+        const newFile = await db.addFileMetadata(
           currentUser.id,
           targetSubjectId,
           file.name,
@@ -287,11 +317,11 @@ export default function Dashboard() {
           file.size
         );
 
-        // 2. Save binary data URL in IndexedDB
-        await saveFileContent(newFile.id, dataUrl);
+        // 2. Save binary data URL in Supabase Storage
+        await db.saveFileContent(currentUser.id, newFile.id, dataUrl, file.type || 'application/octet-stream');
       }
       
-      refreshData();
+      await refreshData();
     } catch (err) {
       console.error('File upload failed', err);
       alert('An error occurred during file upload.');
@@ -300,11 +330,11 @@ export default function Dashboard() {
     }
   };
 
-  const handleToggleFileFavorite = (id: string) => {
+  const handleToggleFileFavorite = async (id: string) => {
     const file = files.find(f => f.id === id);
     if (file) {
-      db.updateFileMetadata(id, { favorite: !file.favorite });
-      refreshData();
+      await db.updateFileMetadata(id, { favorite: !file.favorite });
+      await refreshData();
     }
   };
 
@@ -314,33 +344,33 @@ export default function Dashboard() {
 
     if (!file.inTrash) {
       // Move to trash
-      db.updateFileMetadata(id, { inTrash: true, deletedAt: new Date().toISOString() });
-      refreshData();
+      await db.updateFileMetadata(id, { inTrash: true, deletedAt: new Date().toISOString() });
+      await refreshData();
     } else {
       // Permanent delete
       if (confirm(`Are you sure you want to permanently delete "${file.name}"? This action cannot be undone.`)) {
-        db.deleteFileMetadata(id);
-        await deleteFileContent(id);
-        refreshData();
+        await db.deleteFileContent(currentUser.id, id);
+        await db.deleteFileMetadata(id);
+        await refreshData();
       }
     }
   };
 
-  const handleRestoreFile = (id: string) => {
-    db.updateFileMetadata(id, { inTrash: false, deletedAt: undefined });
-    refreshData();
+  const handleRestoreFile = async (id: string) => {
+    await db.updateFileMetadata(id, { inTrash: false, deletedAt: undefined });
+    await refreshData();
   };
 
-  const handleRenameFile = (id: string, newName: string) => {
-    db.updateFileMetadata(id, { name: newName });
-    refreshData();
+  const handleRenameFile = async (id: string, newName: string) => {
+    await db.updateFileMetadata(id, { name: newName });
+    await refreshData();
   };
 
   const handlePreviewFile = async (file: FileRecord) => {
     try {
-      const content = await getFileContent(file.id);
+      const content = await db.getFileContent(currentUser.id, file.id);
       if (!content) {
-        alert('File binary data not found. Please try re-uploading.');
+        alert('File content URL not found.');
         return;
       }
 
@@ -352,10 +382,17 @@ export default function Dashboard() {
         setActiveViewer('pdf');
       } else if (type.includes('image')) {
         setActiveViewer('image');
-      } else if (type.includes('plain')) {
+      } else if (
+        type.includes('plain') || 
+        type.includes('text') || 
+        type.includes('markdown') || 
+        type.includes('csv') || 
+        file.name.endsWith('.md') || 
+        file.name.endsWith('.csv')
+      ) {
         setActiveViewer('text');
       } else {
-        // Fallback for docx / pptx: download directly since they are binary office documents
+        // Fallback for docx / pptx / xlsx: download directly since they are binary office documents
         handleDownloadFile(file);
       }
     } catch (err) {
@@ -365,18 +402,30 @@ export default function Dashboard() {
 
   const handleDownloadFile = async (file: FileRecord) => {
     try {
-      const content = await getFileContent(file.id);
+      const content = await db.getFileContent(currentUser.id, file.id);
       if (!content) {
-        alert('File content not found.');
+        alert('File content URL not found.');
         return;
       }
       
       const link = document.createElement('a');
-      link.href = content;
-      link.download = file.name;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      if (content.startsWith('http://') || content.startsWith('https://')) {
+        const response = await fetch(content);
+        const blob = await response.blob();
+        const localUrl = URL.createObjectURL(blob);
+        link.href = localUrl;
+        link.download = file.name;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(localUrl);
+      } else {
+        link.href = content;
+        link.download = file.name;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
     } catch (err) {
       console.error('Failed to download file', err);
     }
@@ -409,6 +458,14 @@ export default function Dashboard() {
       handlePreviewFile(imageFiles[currentImageIdx + 1]);
     }
   };
+
+  if (!authChecked || !currentUser) {
+    return (
+      <div className="h-screen w-screen flex items-center justify-center bg-canvas-soft">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="h-screen w-screen flex bg-canvas-soft text-ink overflow-hidden select-none">

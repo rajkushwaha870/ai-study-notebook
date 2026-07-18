@@ -67,42 +67,38 @@ export default function TopNav({
         </button>
 
         <div className="flex items-center gap-1.5 text-xs font-medium text-body overflow-hidden">
-          <span className="text-mute font-mono">Workspace</span>
-          <span className="text-mute font-mono">/</span>
-          {activeSubject ? (
-            <span className="font-semibold text-ink flex items-center gap-1 truncate">
-              {activeSubject.name}
-            </span>
-          ) : (
-            <span className="font-semibold text-ink font-mono">
-              {activeTab === 'files' ? 'All Files' : 'All Notes'}
-            </span>
+          {/* Breadcrumbs for desktop, simplified for mobile */}
+          <span className="hidden md:inline text-mute font-mono">Workspace</span>
+          <span className="hidden md:inline text-mute font-mono">/</span>
+          
+          {activeSubject && (
+            <>
+              <span className="hidden sm:inline font-semibold text-ink truncate max-w-[80px] sm:max-w-[120px]">
+                {activeSubject.name}
+              </span>
+              <span className="hidden sm:inline text-mute font-mono">/</span>
+            </>
+          )}
+          
+          {!activeSubject && (
+            <>
+              <span className="hidden sm:inline font-semibold text-ink font-mono">
+                {activeTab === 'files' ? 'All Files' : 'All Notes'}
+              </span>
+              <span className="hidden sm:inline text-mute font-mono">/</span>
+            </>
           )}
 
-          {activeTab === 'files' ? (
-            <>
-              <span className="text-mute font-mono">/</span>
-              <span className="text-mute truncate max-w-[120px] sm:max-w-[200px]">
-                Files
-              </span>
-            </>
-          ) : (
-            activeNote && (
-              <>
-                <span className="text-mute font-mono">/</span>
-                <span className="text-mute truncate max-w-[120px] sm:max-w-[200px]">
-                  {activeNote.title || 'Untitled Note'}
-                </span>
-              </>
-            )
-          )}
+          <span className="font-semibold text-ink truncate max-w-[100px] xs:max-w-[140px] sm:max-w-[200px]">
+            {activeTab === 'files' ? 'Files' : (activeNote ? (activeNote.title || 'Untitled Note') : (activeTab === 'files' ? 'All Files' : 'All Notes'))}
+          </span>
         </div>
       </div>
 
       {/* Right side: Search shortcut trigger, AutoSave, Note Actions, Theme toggler */}
       <div className="flex items-center gap-2 sm:gap-3">
         {/* Mode Switcher Toggle Pill (Vercel style) */}
-        <div className="flex bg-canvas-soft border border-hairline rounded-full p-0.5 shrink-0 text-[10px] font-mono select-none mr-1">
+        <div className={`bg-canvas-soft border border-hairline rounded-full p-0.5 shrink-0 text-[10px] font-mono select-none mr-1 ${activeNote ? 'hidden sm:flex' : 'flex'}`}>
           <button
             onClick={() => onTabChange('notes')}
             className={`px-3 py-1 rounded-full transition-all cursor-pointer ${

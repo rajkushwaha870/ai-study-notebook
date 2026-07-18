@@ -58,7 +58,7 @@ export default function SubjectModal({
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
@@ -67,22 +67,30 @@ export default function SubjectModal({
       return;
     }
 
-    if (editSubject) {
-      db.updateSubject(editSubject.id, name.trim(), selectedColor, selectedIcon);
-    } else {
-      db.addSubject(userId, name.trim(), selectedColor, selectedIcon);
-    }
+    try {
+      if (editSubject) {
+        await db.updateSubject(editSubject.id, name.trim(), selectedColor, selectedIcon);
+      } else {
+        await db.addSubject(userId, name.trim(), selectedColor, selectedIcon);
+      }
 
-    onSave();
-    onClose();
+      onSave();
+      onClose();
+    } catch (err: any) {
+      setError(err.message || 'Failed to save subject.');
+    }
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (editSubject) {
       if (confirm(`Are you sure you want to delete "${editSubject.name}"? This will delete all notes in this subject.`)) {
-        db.deleteSubject(editSubject.id);
-        onSave();
-        onClose();
+        try {
+          await db.deleteSubject(editSubject.id);
+          onSave();
+          onClose();
+        } catch (err: any) {
+          setError(err.message || 'Failed to delete subject.');
+        }
       }
     }
   };

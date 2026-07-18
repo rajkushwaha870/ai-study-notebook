@@ -174,7 +174,7 @@ export default function FileManager({
             multiple
             onChange={handleFileSelect}
             className="hidden"
-            accept=".pdf,.docx,.ppt,.pptx,.txt,image/*"
+            accept=".pdf,.docx,.ppt,.pptx,.txt,.md,.csv,.xlsx,image/*"
           />
 
           {isUploading ? (
@@ -192,7 +192,7 @@ export default function FileManager({
                 Drag & drop files here, or click to upload
               </h4>
               <p className="text-[10px] text-mute font-mono max-w-sm leading-relaxed">
-                Supports PDF, DOCX, PPT, TXT, Images (JPG, PNG, WEBP). Files will bind automatically to the selected subject.
+                Supports PDF, Images, DOCX, PPTX, TXT, Markdown, CSV, XLSX. Files will bind automatically to the selected subject.
               </p>
             </div>
           )}

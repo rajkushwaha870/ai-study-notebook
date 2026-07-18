@@ -29,8 +29,8 @@ export async function detectAvailableModel(ai: GoogleGenAI): Promise<string> {
 
     // Iterate through the async iterable returned by the SDK
     for await (const m of modelsResponse) {
-      const actions = m.supportedActions || m.supportedGenerationMethods || [];
-      if (actions.includes('generateContent') || actions.includes('generateContentStream')) {
+      const actions = m.supportedActions || (m as any).supportedGenerationMethods || [];
+      if (m.name && (actions.includes('generateContent') || actions.includes('generateContentStream'))) {
         const modelName = m.name.replace(/^models\//, '');
         console.log(`Auto-detected first compatible model: ${modelName}`);
         return modelName;

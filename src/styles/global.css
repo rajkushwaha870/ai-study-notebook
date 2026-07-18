@@ -224,3 +224,108 @@ body {
   margin-top: 0.35rem;
   cursor: pointer;
 }
+
+/* AI Markdown Content styling for wrapping & code blocks & tables */
+.ai-markdown-content {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.ai-markdown-content p {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.ai-markdown-content ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.ai-markdown-content ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.ai-markdown-content li {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.ai-markdown-content blockquote {
+  border-left: 3px solid var(--color-hairline-strong);
+  padding-left: 1rem;
+  font-style: italic;
+  color: var(--color-body);
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.ai-markdown-content code {
+  font-family: var(--font-mono);
+  background-color: var(--color-canvas-soft-2);
+  padding: 0.2rem 0.4rem;
+  border-radius: var(--radius-xs);
+  font-size: 0.8125rem; /* ~13px */
+  word-break: break-all;
+}
+
+.ai-markdown-content pre {
+  font-family: var(--font-mono);
+  background-color: var(--color-canvas-soft-2);
+  padding: 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  overflow-x: auto;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid var(--color-hairline);
+  white-space: pre;
+  word-wrap: normal;
+  max-width: 100%;
+}
+
+.ai-markdown-content pre code {
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  word-break: normal;
+  white-space: pre;
+}
+
+/* Make tables in editor and markdown responsive */
+.prose-editor table,
+.ai-markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.8125rem;
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.prose-editor th,
+.ai-markdown-content th {
+  background-color: var(--color-canvas-soft-2);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  text-align: left;
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+.prose-editor th,
+.prose-editor td,
+.ai-markdown-content th,
+.ai-markdown-content td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--color-hairline);
+}

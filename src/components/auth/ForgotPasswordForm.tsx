@@ -1,25 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../../utils/supabaseClient';
+import { db } from '../../utils/db';
 import { Mail, ArrowLeft, Send } from 'lucide-react';
 
 export default function ForgotPasswordForm() {
   const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    const checkUser = async () => {
+      const user = await db.getCurrentUserAsync();
+      if (user) {
+        window.location.href = '/dashboard';
+      }
+    };
+    checkUser();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
 
     setLoading(true);
+    setError('');
 
-    setTimeout(() => {
+    try {
+      const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin + '/login',
+      });
+
+      if (resetError) {
+        setError(resetError.message);
+        setLoading(false);
+        return;
+      }
+
       setLoading(false);
       setSuccess(true);
-    }, 800);
+    } catch (err: any) {
+      setError(err.message || 'An error occurred. Please try again.');
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="w-full max-w-md p-8 bg-canvas border border-hairline rounded-lg shadow-level-4 transition-all duration-300">
+    <div className="w-full max-w-md p-6 sm:p-8 bg-canvas border border-hairline rounded-lg shadow-level-4 transition-all duration-300">
       <div className="mb-6">
         <a
           href="/login"
@@ -34,15 +61,21 @@ export default function ForgotPasswordForm() {
         <p className="mt-2 text-sm text-body">
           {success
             ? 'Check your inbox for further instructions.'
-            : "Enter your email address and we'll simulate sending you a recovery link."}
+            : "Enter your email address and we'll send you a recovery link."}
         </p>
       </div>
+
+      {error && (
+        <div className="p-3 mb-6 text-sm bg-error-soft text-error-deep rounded-sm border border-error-soft font-medium animate-pulse">
+          {error}
+        </div>
+      )}
 
       {success ? (
         <div className="space-y-6 animate-fade-in">
           <div className="p-4 bg-link-bg-soft text-link-deep rounded-sm border border-link-bg-soft text-sm leading-relaxed">
-            We have sent a simulated password reset link to <strong className="font-semibold">{email}</strong>.
-            In a production app, this link would expire in 24 hours.
+            We have sent a password reset link to <strong className="font-semibold">{email}</strong>.
+            Please check your inbox.
           </div>
           <button
             onClick={() => {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../../utils/db';
+import { supabase } from '../../utils/supabaseClient';
 import { KeyRound, Mail, ArrowRight, Eye, EyeOff } from 'lucide-react';
 
 export default function LoginForm() {
@@ -11,13 +12,16 @@ export default function LoginForm() {
 
   useEffect(() => {
     // If user is already logged in, redirect to dashboard
-    const user = db.getCurrentUser();
-    if (user) {
-      window.location.href = '/dashboard';
-    }
+    const checkUser = async () => {
+      const user = await db.getCurrentUserAsync();
+      if (user) {
+        window.location.href = '/dashboard';
+      }
+    };
+    checkUser();
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
@@ -28,22 +32,47 @@ export default function LoginForm() {
 
     setLoading(true);
 
-    // Simulate network latency
-    setTimeout(() => {
-      const user = db.findUser(email);
-      if (!user || user.passwordHash !== password) {
-        setError('Invalid email or password.');
+    try {
+      const { data, error: authError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (authError) {
+        setError(authError.message);
         setLoading(false);
         return;
       }
 
-      db.setCurrentUser(user);
       window.location.href = '/dashboard';
-    }, 600);
+    } catch (err: any) {
+      setError(err.message || 'An error occurred during sign in.');
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setError('');
+    setLoading(true);
+    try {
+      const { error: oAuthError } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: window.location.origin + '/dashboard',
+        },
+      });
+      if (oAuthError) {
+        setError(oAuthError.message);
+        setLoading(false);
+      }
+    } catch (err: any) {
+      setError(err.message || 'Failed to start Google Authentication.');
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="w-full max-w-md p-8 bg-canvas border border-hairline rounded-lg shadow-level-4 transition-all duration-300">
+    <div className="w-full max-w-md p-6 sm:p-8 bg-canvas border border-hairline rounded-lg shadow-level-4 transition-all duration-300">
       <div className="mb-8">
         <h2 className="text-2xl font-semibold tracking-tight text-ink">
           Welcome back.
@@ -120,6 +149,38 @@ export default function LoginForm() {
         >
           {loading ? 'Signing in...' : 'Sign In'}
           {!loading && <ArrowRight size={16} />}
+        </button>
+
+        <div className="relative flex items-center justify-center my-4">
+          <span className="absolute inset-x-0 h-px bg-hairline"></span>
+          <span className="relative px-3 text-xs bg-canvas text-mute font-mono uppercase tracking-wider">or</span>
+        </div>
+
+        <button
+          type="button"
+          onClick={handleGoogleLogin}
+          disabled={loading}
+          className="w-full flex items-center justify-center gap-2 py-2 px-4 bg-canvas border border-hairline text-ink rounded-full hover:bg-canvas-soft-2 active:scale-[0.98] transition-all font-medium text-sm h-[40px] cursor-pointer disabled:opacity-50"
+        >
+          <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24">
+            <path
+              fill="#4285F4"
+              d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v3.92h6.69c-.29 1.5-.1.1.14 2.01c-.8 1.2-1.8 2.2-3.1 3l4.81 3.73c2.81-2.59 4.49-6.4 4.49-10.59z"
+            />
+            <path
+              fill="#34A853"
+              d="M12 24c3.24 0 5.97-1.08 7.96-2.91l-4.81-3.73c-1.33.89-3.04 1.43-5.15 1.43-3.97 0-7.34-2.68-8.54-6.29H1.46v3.86C3.44 20.48 7.42 24 12 24z"
+            />
+            <path
+              fill="#FBBC05"
+              d="M3.46 14.5c-.3-1-.46-2.07-.46-3.17s.16-2.17.46-3.17V4.3H1.46C.53 6.16 0 8.23 0 10.43s.53 4.27 1.46 6.13l2.8-2.06z"
+            />
+            <path
+              fill="#EA4335"
+              d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.96 1.19 15.24 0 12 0 7.42 0 3.44 3.52 1.46 7.42l3.81 2.96c1.2-3.61 4.57-6.29 8.54-6.29z"
+            />
+          </svg>
+          Continue with Google
         </button>
       </form>
 

@@ -1,8 +1,16 @@
 import type { APIRoute } from 'astro';
 import { GoogleGenAI } from '@google/genai';
 import { getGeminiApiKey, detectAvailableModel } from '../../services/gemini';
+import { checkAndInitDb } from '../../utils/supabaseInit';
 
 export const POST: APIRoute = async () => {
+  // Verify and initialize Supabase database tables & RLS policies automatically
+  try {
+    await checkAndInitDb();
+  } catch (dbError: any) {
+    console.error('Database connection/initialization failed:', dbError);
+  }
+
   const apiKey = getGeminiApiKey();
   
   if (!apiKey) {

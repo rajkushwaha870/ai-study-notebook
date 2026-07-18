@@ -8,16 +8,19 @@ import {
   Plus, Search, Trash2, Edit3, Check, Copy, RotateCcw, 
   Square, Send, Paperclip, FileText, X, Bot, Sparkles, AlertCircle
 } from 'lucide-react';
+import { ErrorBoundary } from './ErrorBoundary';
 
-export default function AIAssistant() {
+function AIAssistant() {
   const {
     currentUser,
+    authChecked,
     chats,
     activeChatId,
     activeChat,
     selectedAttachments,
     isGenerating,
     error,
+    setError,
     newChat,
     sendMessage,
     regenerateResponse,
@@ -51,12 +54,36 @@ export default function AIAssistant() {
 
   // Load sidebar data and available files/notes
   useEffect(() => {
-    if (currentUser) {
-      setSubjects(db.getSubjects(currentUser.id));
-      setAvailableNotes(db.getNotes(currentUser.id));
-      // Only include PDFs not in trash
-      setAvailableFiles(db.getFiles(currentUser.id).filter(f => f.type === 'application/pdf' && !f.inTrash));
-    }
+    if (!currentUser) return;
+
+    let active = true;
+
+    const loadData = async () => {
+      try {
+        const [subs, notes, files] = await Promise.all([
+          db.getSubjects(currentUser.id),
+          db.getNotes(currentUser.id),
+          db.getFiles(currentUser.id)
+        ]);
+
+        if (active) {
+          setSubjects(subs);
+          setAvailableNotes(notes);
+          setAvailableFiles(files.filter(f => f.type === 'application/pdf' && !f.inTrash));
+        }
+      } catch (err: any) {
+        console.error('Failed to load sidebar data:', err);
+        if (active) {
+          setError(err.message || 'Failed to load study notes or files from database.');
+        }
+      }
+    };
+
+    loadData();
+
+    return () => {
+      active = false;
+    };
   }, [currentUser]);
 
   // Click outside handler for attachment menu
@@ -122,7 +149,7 @@ export default function AIAssistant() {
     window.location.href = '/login';
   };
 
-  if (!currentUser) {
+  if (!authChecked || !currentUser) {
     return (
       <div className="h-screen w-screen flex items-center justify-center bg-canvas-soft font-mono text-xs text-mute">
         Authenticating workspace...
@@ -320,7 +347,7 @@ export default function AIAssistant() {
                         )}
 
                         {/* Content Container */}
-                        <div className={`max-w-[85%] space-y-2`}>
+                        <div className="max-w-[92%] sm:max-w-[85%] space-y-2">
                           <div className={`px-4 py-3 rounded-lg border text-xs leading-relaxed ${
                             isUser
                               ? 'bg-canvas border-hairline shadow-level-1 text-ink rounded-tr-none'
@@ -484,55 +511,77 @@ export default function AIAssistant() {
                     <button
                       type="button"
                       onClick={() => setIsAttachmentMenuOpen(!isAttachmentMenuOpen)}
-                      className="p-2 hover:bg-canvas-soft-2 text-mute hover:text-ink rounded-full transition-colors cursor-pointer shrink-0"
+                      className="p-2 hover:bg-canvas-soft-2 text-mute hover:text-ink rounded-full transition-colors cursor-pointer shrink-0 flex items-center justify-center h-9 w-9 sm:h-8 sm:w-8"
                       title="Attach Note or PDF context"
                     >
                       <Paperclip size={16} />
                     </button>
 
-                    {/* Popover Dropdown Selection List */}
+                    {/* Popover Dropdown Selection List (Responsive: bottom-sheet on mobile, popover on desktop) */}
                     {isAttachmentMenuOpen && (
-                      <div className="absolute bottom-12 left-0 w-64 bg-canvas border border-hairline rounded-md shadow-level-4 p-3 space-y-3 z-50 text-left animate-slide-up">
-                        <div>
-                          <h4 className="text-[10px] font-mono uppercase tracking-wider text-mute mb-1.5">Attach Study Note</h4>
-                          <div className="max-h-28 overflow-y-auto space-y-1">
-                            {availableNotes.map(n => (
-                              <label key={n.id} className="flex items-center gap-2 px-1.5 py-1 hover:bg-canvas-soft rounded-sm cursor-pointer text-[11px] font-medium text-body hover:text-ink truncate">
-                                <input
-                                  type="checkbox"
-                                  checked={!!selectedAttachments.find(a => a.id === n.id && a.type === 'note')}
-                                  onChange={() => toggleAttachment({ id: n.id, name: n.title, type: 'note' })}
-                                  className="rounded-xs accent-violet shrink-0"
-                                />
-                                <span className="truncate">{n.title}</span>
-                              </label>
-                            ))}
-                            {availableNotes.length === 0 && (
-                              <span className="text-[10px] text-mute font-mono block px-1.5 py-1">No notes created yet</span>
-                            )}
+                      <>
+                        {/* Mobile dim backdrop */}
+                        <div 
+                          className="md:hidden fixed inset-0 bg-black/40 backdrop-blur-xs z-40"
+                          onClick={() => setIsAttachmentMenuOpen(false)}
+                        />
+                        <div className="fixed bottom-0 left-0 right-0 max-h-[70vh] rounded-t-xl border-t border-hairline p-4 pb-8 space-y-4 z-50 overflow-y-auto bg-canvas shadow-level-5 animate-slide-up md:absolute md:bottom-12 md:left-0 md:right-auto md:w-64 md:max-h-none md:rounded-md md:border md:p-3 md:pb-3 md:space-y-3 md:shadow-level-4 md:z-50 text-left">
+                          {/* Drag handle decoration for mobile sheet */}
+                          <div className="md:hidden w-12 h-1 bg-hairline-strong/30 rounded-full mx-auto mb-2" />
+                          
+                          {/* Sheet Header for mobile */}
+                          <div className="md:hidden flex justify-between items-center pb-2 border-b border-hairline">
+                            <span className="text-xs font-semibold text-ink">Attach Context</span>
+                            <button
+                              type="button"
+                              onClick={() => setIsAttachmentMenuOpen(false)}
+                              className="p-1 hover:bg-canvas-soft-2 rounded-full text-mute hover:text-ink cursor-pointer"
+                            >
+                              <X size={16} />
+                            </button>
                           </div>
-                        </div>
 
-                        <div className="border-t border-hairline pt-2">
-                          <h4 className="text-[10px] font-mono uppercase tracking-wider text-mute mb-1.5">Attach PDF Document</h4>
-                          <div className="max-h-28 overflow-y-auto space-y-1">
-                            {availableFiles.map(f => (
-                              <label key={f.id} className="flex items-center gap-2 px-1.5 py-1 hover:bg-canvas-soft rounded-sm cursor-pointer text-[11px] font-medium text-body hover:text-ink truncate">
-                                <input
-                                  type="checkbox"
-                                  checked={!!selectedAttachments.find(a => a.id === f.id && a.type === 'pdf')}
-                                  onChange={() => toggleAttachment({ id: f.id, name: f.name, type: 'pdf' })}
-                                  className="rounded-xs accent-violet shrink-0"
-                                />
-                                <span className="truncate">{f.name}</span>
-                              </label>
-                            ))}
-                            {availableFiles.length === 0 && (
-                              <span className="text-[10px] text-mute font-mono block px-1.5 py-1">No PDFs uploaded yet</span>
-                            )}
+                          <div>
+                            <h4 className="text-[10px] font-mono uppercase tracking-wider text-mute mb-1.5">Attach Study Note</h4>
+                            <div className="max-h-28 md:max-h-36 overflow-y-auto space-y-1">
+                              {availableNotes.map(n => (
+                                <label key={n.id} className="flex items-center gap-2 px-1.5 py-1 hover:bg-canvas-soft rounded-sm cursor-pointer text-[11px] font-medium text-body hover:text-ink truncate">
+                                  <input
+                                    type="checkbox"
+                                    checked={!!selectedAttachments.find(a => a.id === n.id && a.type === 'note')}
+                                    onChange={() => toggleAttachment({ id: n.id, name: n.title, type: 'note' })}
+                                    className="rounded-xs accent-violet shrink-0"
+                                  />
+                                  <span className="truncate">{n.title}</span>
+                                </label>
+                              ))}
+                              {availableNotes.length === 0 && (
+                                <span className="text-[10px] text-mute font-mono block px-1.5 py-1">No notes created yet</span>
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="border-t border-hairline pt-2">
+                            <h4 className="text-[10px] font-mono uppercase tracking-wider text-mute mb-1.5">Attach PDF Document</h4>
+                            <div className="max-h-28 md:max-h-36 overflow-y-auto space-y-1">
+                              {availableFiles.map(f => (
+                                <label key={f.id} className="flex items-center gap-2 px-1.5 py-1 hover:bg-canvas-soft rounded-sm cursor-pointer text-[11px] font-medium text-body hover:text-ink truncate">
+                                  <input
+                                    type="checkbox"
+                                    checked={!!selectedAttachments.find(a => a.id === f.id && a.type === 'pdf')}
+                                    onChange={() => toggleAttachment({ id: f.id, name: f.name, type: 'pdf' })}
+                                    className="rounded-xs accent-violet shrink-0"
+                                  />
+                                  <span className="truncate">{f.name}</span>
+                                </label>
+                              ))}
+                              {availableFiles.length === 0 && (
+                                <span className="text-[10px] text-mute font-mono block px-1.5 py-1">No PDFs uploaded yet</span>
+                              )}
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      </>
                     )}
                   </div>
 
@@ -552,7 +601,7 @@ export default function AIAssistant() {
                     <button
                       type="button"
                       onClick={stopGenerating}
-                      className="p-2 bg-error-deep hover:bg-error text-on-primary rounded-full transition-colors cursor-pointer shrink-0 flex items-center justify-center h-8 w-8 shadow-level-2"
+                      className="p-2 bg-error-deep hover:bg-error text-on-primary rounded-full transition-colors cursor-pointer shrink-0 flex items-center justify-center h-9 w-9 sm:h-8 sm:w-8 shadow-level-2"
                       title="Stop generating"
                     >
                       <Square size={12} fill="white" />
@@ -562,7 +611,7 @@ export default function AIAssistant() {
                       type="button"
                       onClick={handleSend}
                       disabled={!promptInput.trim()}
-                      className="p-2 bg-primary text-on-primary hover:opacity-90 disabled:opacity-30 rounded-full transition-all cursor-pointer shrink-0 flex items-center justify-center h-8 w-8 shadow-level-2 disabled:cursor-not-allowed"
+                      className="p-2 bg-primary text-on-primary hover:opacity-90 disabled:opacity-30 rounded-full transition-all cursor-pointer shrink-0 flex items-center justify-center h-9 w-9 sm:h-8 sm:w-8 shadow-level-2 disabled:cursor-not-allowed"
                       title="Send message"
                     >
                       <Send size={12} fill="currentColor" />
@@ -580,5 +629,13 @@ export default function AIAssistant() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function AIAssistantWithErrorBoundary() {
+  return (
+    <ErrorBoundary>
+      <AIAssistant />
+    </ErrorBoundary>
   );
 }

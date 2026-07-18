@@ -4,15 +4,35 @@ import { BookOpen, Cpu, Percent, Languages, Pin, Heart, Terminal, ArrowRight, Ch
 ---
 
 <Layout title="NoteBook. - Personal Study Notes for Developers & Academics">
+	<!-- Immediate client-side redirect if authenticated -->
+	<script is:inline>
+		(() => {
+			const keys = Object.keys(localStorage);
+			const sbKey = keys.find(k => k.startsWith('sb-') && k.endsWith('-auth-token'));
+			if (sbKey) {
+				try {
+					const sessionData = JSON.parse(localStorage.getItem(sbKey) || '{}');
+					if (sessionData && sessionData.user) {
+						window.location.href = '/dashboard';
+					}
+				} catch (e) {
+					console.error('Error parsing session for auto-redirect:', e);
+				}
+			}
+		})();
+	</script>
+
 	<!-- Navbar -->
 	<header class="sticky top-0 z-50 h-16 border-b border-hairline bg-canvas/80 backdrop-blur-md">
 		<div class="max-w-[1400px] h-full mx-auto px-6 flex items-center justify-between">
 			<!-- Logo -->
 			<div class="flex items-center gap-2">
-				<div class="w-6 h-6 bg-primary text-on-primary flex items-center justify-center rounded-sm text-xs font-bold font-mono">
-					N
-				</div>
-				<span class="text-sm font-semibold tracking-tight text-ink font-sans">NoteBook.</span>
+				<a href="/" class="flex items-center gap-2">
+					<div class="w-6 h-6 bg-primary text-on-primary flex items-center justify-center rounded-sm text-xs font-bold font-mono">
+						N
+					</div>
+					<span class="text-sm font-semibold tracking-tight text-ink font-sans">NoteBook.</span>
+				</a>
 			</div>
 
 			<!-- Nav links -->
@@ -22,8 +42,8 @@ import { BookOpen, Cpu, Percent, Languages, Pin, Heart, Terminal, ArrowRight, Ch
 				<a href="https://github.com" target="_blank" class="text-xs text-body hover:text-ink transition-colors font-medium">Open Source</a>
 			</nav>
 
-			<!-- Action buttons -->
-			<div class="flex items-center gap-3">
+			<!-- Action buttons (Desktop/Tablet) -->
+			<div class="hidden sm:flex items-center gap-3">
 				<a href="/login" class="text-xs font-semibold text-body hover:text-ink transition-colors px-3 py-1.5 rounded-sm">
 					Log In
 				</a>
@@ -31,8 +51,30 @@ import { BookOpen, Cpu, Percent, Languages, Pin, Heart, Terminal, ArrowRight, Ch
 					Sign Up
 				</a>
 			</div>
+
+			<!-- Mobile Hamburger Button -->
+			<button id="mobile-menu-btn" class="sm:hidden p-1.5 hover:bg-canvas-soft-2 text-mute hover:text-ink rounded-sm transition-colors cursor-pointer" aria-label="Toggle Menu">
+				<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+			</button>
 		</div>
 	</header>
+
+	<!-- Mobile Menu Overlay -->
+	<div id="mobile-menu" class="hidden fixed inset-0 z-40 bg-canvas/98 pt-20 px-6 space-y-6">
+		<nav class="flex flex-col gap-6 text-sm font-medium">
+			<a href="#features" class="text-body hover:text-ink transition-colors py-2 border-b border-hairline">Features</a>
+			<a href="#pricing" class="text-body hover:text-ink transition-colors py-2 border-b border-hairline">Pricing</a>
+			<a href="https://github.com" target="_blank" class="text-body hover:text-ink transition-colors py-2 border-b border-hairline font-medium">Open Source</a>
+			<div class="pt-4 flex flex-col gap-3">
+				<a href="/login" class="text-center py-2.5 rounded-full border border-hairline hover:bg-canvas-soft-2 transition-colors font-semibold text-xs text-body">
+					Log In
+				</a>
+				<a href="/signup" class="text-center py-2.5 bg-primary text-on-primary hover:opacity-90 transition-opacity rounded-full font-semibold text-xs shadow-level-2">
+					Sign Up
+				</a>
+			</div>
+		</nav>
+	</div>
 
 	<!-- Main Body Wrapper -->
 	<main class="relative min-h-screen bg-canvas-soft">
@@ -84,7 +126,7 @@ import { BookOpen, Cpu, Percent, Languages, Pin, Heart, Terminal, ArrowRight, Ch
 				</div>
 				<div class="grid grid-cols-4 aspect-[16/10] min-h-[300px]">
 					<!-- Mock Sidebar -->
-					<div class="col-span-1 border-r border-hairline bg-canvas-soft p-3 text-left space-y-4">
+					<div class="hidden sm:block col-span-1 border-r border-hairline bg-canvas-soft p-3 text-left space-y-4">
 						<div class="flex items-center gap-2 border-b border-hairline pb-3">
 							<div class="w-5 h-5 rounded bg-primary text-on-primary flex items-center justify-center text-[10px] font-mono font-bold">N</div>
 							<div class="text-[11px] font-semibold text-ink leading-none">Jane Doe</div>
@@ -106,7 +148,7 @@ import { BookOpen, Cpu, Percent, Languages, Pin, Heart, Terminal, ArrowRight, Ch
 						</div>
 					</div>
 					<!-- Mock List -->
-					<div class="col-span-1 border-r border-hairline bg-canvas p-3 text-left space-y-3">
+					<div class="hidden md:block col-span-1 border-r border-hairline bg-canvas p-3 text-left space-y-3">
 						<div class="text-[9px] font-mono uppercase tracking-wider text-mute pb-1 border-b border-hairline">Notes list</div>
 						<div class="p-2 bg-canvas-soft border-l-2 border-l-primary rounded-sm space-y-1">
 							<div class="text-[11px] font-bold text-ink leading-tight">Tailwind CSS v4 Notes</div>
@@ -118,7 +160,7 @@ import { BookOpen, Cpu, Percent, Languages, Pin, Heart, Terminal, ArrowRight, Ch
 						</div>
 					</div>
 					<!-- Mock Editor -->
-					<div class="col-span-2 p-4 text-left space-y-3">
+					<div class="col-span-4 sm:col-span-3 md:col-span-2 p-4 text-left space-y-3">
 						<div class="h-6 border-b border-hairline flex items-center justify-between text-[10px] text-mute">
 							<span>Computer Science / CSS v4</span>
 							<span class="text-link">Saved</span>
@@ -342,4 +384,29 @@ import { BookOpen, Cpu, Percent, Languages, Pin, Heart, Terminal, ArrowRight, Ch
 			</div>
 		</div>
 	</footer>
+
+	<script>
+		const menuBtn = document.getElementById('mobile-menu-btn');
+		const mobileMenu = document.getElementById('mobile-menu');
+
+		if (menuBtn && mobileMenu) {
+			menuBtn.addEventListener('click', () => {
+				mobileMenu.classList.toggle('hidden');
+				if (mobileMenu.classList.contains('hidden')) {
+					document.body.style.overflow = '';
+				} else {
+					document.body.style.overflow = 'hidden';
+				}
+			});
+
+			// Close menu when clicking links
+			const links = mobileMenu.querySelectorAll('a');
+			links.forEach(link => {
+				link.addEventListener('click', () => {
+					mobileMenu.classList.add('hidden');
+					document.body.style.overflow = '';
+				});
+			});
+		}
+	</script>
 </Layout>

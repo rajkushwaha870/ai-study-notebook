@@ -21,28 +21,32 @@ export default function AISettings() {
 
   // Load auth and settings
   useEffect(() => {
-    const user = db.getCurrentUser();
-    if (!user) {
-      window.location.href = '/login';
-    } else {
-      setCurrentUser(user);
-      setSubjects(db.getSubjects(user.id));
-      
-      // Load saved settings if any
-      const stored = localStorage.getItem(`study_notes_ai_settings_${user.id}`);
-      if (stored) {
-        try {
-          const parsed = JSON.parse(stored);
-          if (parsed.provider) setProvider(parsed.provider);
-        } catch (e) {
-          console.error(e);
+    const initSettings = async () => {
+      const user = await db.getCurrentUserAsync();
+      if (!user) {
+        window.location.href = '/login';
+      } else {
+        setCurrentUser(user);
+        const subs = await db.getSubjects(user.id);
+        setSubjects(subs);
+        
+        // Load saved settings if any
+        const stored = localStorage.getItem(`study_notes_ai_settings_${user.id}`);
+        if (stored) {
+          try {
+            const parsed = JSON.parse(stored);
+            if (parsed.provider) setProvider(parsed.provider);
+          } catch (e) {
+            console.error(e);
+          }
         }
+        
+        // Auto test connection on mount to show initial status
+        checkInitialConnection();
+        setAuthChecked(true);
       }
-      
-      // Auto test connection on mount to show initial status
-      checkInitialConnection();
-      setAuthChecked(true);
-    }
+    };
+    initSettings();
   }, []);
 
   const checkInitialConnection = async () => {
@@ -83,8 +87,8 @@ export default function AISettings() {
     }, 500);
   };
 
-  const handleLogout = () => {
-    db.clearCurrentUser();
+  const handleLogout = async () => {
+    await db.clearCurrentUser();
     window.location.href = '/login';
   };
 

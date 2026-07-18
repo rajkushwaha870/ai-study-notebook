@@ -75,7 +75,7 @@ export default function NoteList({
   });
 
   return (
-    <div className="w-80 border-r border-hairline h-full flex flex-col bg-canvas-soft select-none shrink-0">
+    <div className="w-full sm:w-80 border-r border-hairline h-full flex flex-col bg-canvas-soft select-none shrink-0">
       {/* Header with quick creation action */}
       <div className="p-4 border-b border-hairline flex items-center justify-between bg-canvas-soft shrink-0">
         <span className="text-xs font-mono uppercase tracking-wider text-mute">

@@ -25,6 +25,11 @@ export default function PdfViewer({
       return;
     }
 
+    if (dataUrl.startsWith('http://') || dataUrl.startsWith('https://') || dataUrl.startsWith('blob:')) {
+      setBlobUrl(dataUrl);
+      return;
+    }
+
     try {
       const base64Content = dataUrl.includes(',') ? dataUrl.split(',')[1] : dataUrl;
       const byteCharacters = atob(base64Content);
