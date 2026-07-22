@@ -3,9 +3,40 @@ import '../styles/global.css';
 
 interface Props {
 	title?: string;
+	description?: string;
+	keywords?: string;
+	canonicalURL?: string;
+	ogImage?: string;
+	ogType?: string;
 }
 
-const { title = "NoteBook - Personal Study Notes" } = Astro.props;
+const {
+	title = "AI NoteBook - Smart AI Notebook App, Online Note & Todo Note Platform",
+	description = "AI NoteBook is the ultimate online note taking and todo note application for students and professionals. Organize study materials with our smart study material uploader, instant search, and markdown editor.",
+	keywords = "AI NoteBook, ai notebook app, online note, todo note, study material uploader, markdown study notes, note taking app",
+	canonicalURL = Astro.url.href,
+	ogImage = "/og-image.png",
+	ogType = "website"
+} = Astro.props;
+
+const siteUrl = Astro.site ? Astro.site.toString() : "https://notebook.app";
+const fullOgImageUrl = new URL(ogImage, siteUrl).toString();
+
+const jsonLd = {
+	"@context": "https://schema.org",
+	"@type": "SoftwareApplication",
+	"name": "AI NoteBook",
+	"applicationCategory": "EducationalApplication",
+	"operatingSystem": "Web",
+	"offers": {
+		"@type": "Offer",
+		"price": "0",
+		"priceCurrency": "USD"
+	},
+	"description": description,
+	"keywords": keywords,
+	"url": canonicalURL
+};
 ---
 <!doctype html>
 <html lang="en">
@@ -15,13 +46,41 @@ const { title = "NoteBook - Personal Study Notes" } = Astro.props;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
+		
+		<!-- Primary Meta Tags -->
 		<title>{title}</title>
+		<meta name="title" content={title} />
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		<meta name="author" content="AI NoteBook" />
+		<meta name="robots" content="index, follow" />
+		<link rel="canonical" href={canonicalURL} />
+
+		<!-- Open Graph / Facebook / LinkedIn / WhatsApp -->
+		<meta property="og:site_name" content="AI NoteBook" />
+		<meta property="og:type" content={ogType} />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={fullOgImageUrl} />
+		<meta property="og:image:alt" content="AI NoteBook - Smart AI Notebook App, Online Note & Study Material Uploader" />
+		<meta property="og:locale" content="en_US" />
+
+		<!-- Twitter Meta Tags -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:url" content={canonicalURL} />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={fullOgImageUrl} />
 
 		<!-- Preconnect to Google Fonts -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<!-- Load Inter for UI/Headings and JetBrains Mono for Code/Captions -->
 		<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet" />
+
+		<!-- Schema.org Structured Data -->
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
 
 		<!-- Inline script to determine and set user theme instantly, preventing flash of unstyled content -->
 		<script is:inline>

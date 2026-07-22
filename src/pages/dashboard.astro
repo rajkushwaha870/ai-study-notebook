@@ -3,7 +3,10 @@ import Layout from '../layouts/Layout.astro';
 import DashboardComponent from '../components/dashboard/Dashboard';
 ---
 
-<Layout title="Dashboard - NoteBook.">
+<Layout 
+	title="Dashboard - AI NoteBook"
+	description="Manage your AI NoteBook workspace, online notes, todo note lists, and uploaded study materials."
+>
   <main class="h-screen w-screen overflow-hidden">
     <DashboardComponent client:only="react" />
   </main>
