@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import InstallPrompt from '../components/pwa/InstallPrompt.tsx';
 
 interface Props {
 	title?: string;
@@ -8,6 +9,7 @@ interface Props {
 	canonicalURL?: string;
 	ogImage?: string;
 	ogType?: string;
+	faqSchema?: any;
 }
 
 const {
@@ -16,7 +18,8 @@ const {
 	keywords = "AI NoteBook, ai notebook app, online note, todo note, study material uploader, markdown study notes, note taking app",
 	canonicalURL = Astro.url.href,
 	ogImage = "/og-image.png",
-	ogType = "website"
+	ogType = "website",
+	faqSchema = null
 } = Astro.props;
 
 const siteUrl = Astro.site ? Astro.site.toString() : "https://notebook.app";
@@ -25,7 +28,7 @@ const fullOgImageUrl = new URL(ogImage, siteUrl).toString();
 const jsonLd = {
 	"@context": "https://schema.org",
 	"@type": "SoftwareApplication",
-	"name": "AI NoteBook",
+	"name": "AI Study Notebook",
 	"applicationCategory": "EducationalApplication",
 	"operatingSystem": "Web",
 	"offers": {
@@ -43,8 +46,20 @@ const jsonLd = {
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		
+		<!-- PWA Primary & Mobile Meta Tags -->
+		<meta name="theme-color" content="#171717" />
+		<meta name="mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		<meta name="apple-mobile-web-app-title" content="Notebook AI" />
+
+		<!-- Icons & Web App Manifest -->
+		<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<link rel="manifest" href="/site.webmanifest" />
 		<meta name="generator" content={Astro.generator} />
 		
 		<!-- Primary Meta Tags -->
@@ -52,18 +67,18 @@ const jsonLd = {
 		<meta name="title" content={title} />
 		<meta name="description" content={description} />
 		<meta name="keywords" content={keywords} />
-		<meta name="author" content="AI NoteBook" />
+		<meta name="author" content="AI Study Notebook" />
 		<meta name="robots" content="index, follow" />
 		<link rel="canonical" href={canonicalURL} />
 
 		<!-- Open Graph / Facebook / LinkedIn / WhatsApp -->
-		<meta property="og:site_name" content="AI NoteBook" />
+		<meta property="og:site_name" content="AI Study Notebook" />
 		<meta property="og:type" content={ogType} />
 		<meta property="og:url" content={canonicalURL} />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:image" content={fullOgImageUrl} />
-		<meta property="og:image:alt" content="AI NoteBook - Smart AI Notebook App, Online Note & Study Material Uploader" />
+		<meta property="og:image:alt" content="AI Study Notebook - Smart AI Notebook App, Online Note & Study Material Uploader" />
 		<meta property="og:locale" content="en_US" />
 
 		<!-- Twitter Meta Tags -->
@@ -81,8 +96,11 @@ const jsonLd = {
 
 		<!-- Schema.org Structured Data -->
 		<script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+		{faqSchema && (
+			<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+		)}
 
-		<!-- Inline script to determine and set user theme instantly, preventing flash of unstyled content -->
+		<!-- Inline script to determine and set user theme instantly -->
 		<script is:inline>
 			(() => {
 				const theme = (() => {
@@ -103,8 +121,24 @@ const jsonLd = {
 				window.localStorage.setItem('theme', theme);
 			})();
 		</script>
+
+		<!-- Service Worker Registration -->
+		<script is:inline>
+			if ('serviceWorker' in navigator) {
+				window.addEventListener('load', () => {
+					navigator.serviceWorker.register('/sw.js')
+						.then((reg) => {
+							console.log('[PWA] ServiceWorker registered with scope:', reg.scope);
+						})
+						.catch((err) => {
+							console.error('[PWA] ServiceWorker registration failed:', err);
+						});
+				});
+			}
+		</script>
 	</head>
 	<body>
 		<slot />
+		<InstallPrompt client:only="react" variant="banner" />
 	</body>
 </html>

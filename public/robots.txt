@@ -1,7 +1,11 @@
+# https://www.robotstxt.org/robotstxt.html
 User-agent: *
 Allow: /
+
+# Private & API routes
 Disallow: /api/
 Disallow: /dashboard/
 Disallow: /settings/
 
+# Host & Sitemap location
 Sitemap: https://notebook.app/sitemap.xml

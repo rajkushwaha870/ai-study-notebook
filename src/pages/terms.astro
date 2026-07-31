@@ -1,0 +1,169 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { FileText, CheckCircle2, ShieldAlert, Scale, HelpCircle } from 'lucide-react';
+---
+
+<Layout 
+	title="Terms & Conditions - AI NoteBook"
+	description="Read the official Terms & Conditions and Terms of Service for AI NoteBook. Understand user agreements, rights, acceptable use, and platform policies."
+	keywords="AI NoteBook terms and conditions, terms of service, online note user agreement, platform guidelines"
+	canonicalURL="https://notebook.app/terms"
+>
+	<Header currentPath="/terms" />
+
+	<main class="relative min-h-screen bg-canvas-soft">
+		<!-- Mesh Gradient Background -->
+		<div class="mesh-gradient-container opacity-20"></div>
+
+		<!-- Page Header -->
+		<section class="relative max-w-[1000px] mx-auto px-6 pt-16 pb-12 z-10">
+			<div class="inline-flex items-center gap-2 px-3 py-1 bg-canvas border border-hairline text-ink text-[11px] font-mono rounded-full mb-4 shadow-level-1">
+				<Scale size={12} className="text-link" />
+				<span>TERMS OF SERVICE</span>
+			</div>
+			<h1 class="text-3xl sm:text-5xl font-semibold text-ink tracking-tight mb-4">
+				Terms & Conditions.
+			</h1>
+			<p class="text-sm sm:text-base text-body max-w-2xl leading-relaxed mb-6">
+				Please review these terms before using AI NoteBook. By accessing or creating an account on notebook.app, you agree to comply with the rules outlined below.
+			</p>
+			<div class="flex items-center gap-4 text-xs text-mute font-mono border-t border-hairline pt-4">
+				<span>Last Updated: July 23, 2026</span>
+				<span>•</span>
+				<span>Effective Immediately</span>
+			</div>
+		</section>
+
+		<!-- Content Grid -->
+		<section class="relative max-w-[1000px] mx-auto px-6 pb-24 z-10">
+			<div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+				
+				<!-- Quick Jump Sidebar -->
+				<aside class="hidden md:block col-span-1 space-y-2 sticky top-24 h-fit text-xs select-none">
+					<span class="font-mono uppercase tracking-wider text-[10px] text-mute font-semibold block mb-3">On this page</span>
+					<a href="#acceptance" class="block text-body hover:text-ink transition-colors py-1">1. Acceptance of Terms</a>
+					<a href="#accounts" class="block text-body hover:text-ink transition-colors py-1">2. User Accounts</a>
+					<a href="#acceptable-use" class="block text-body hover:text-ink transition-colors py-1">3. Acceptable Use</a>
+					<a href="#ownership" class="block text-body hover:text-ink transition-colors py-1">4. IP & Note Ownership</a>
+					<a href="#modifications" class="block text-body hover:text-ink transition-colors py-1">5. Service Changes</a>
+					<a href="#liability" class="block text-body hover:text-ink transition-colors py-1">6. Limitation of Liability</a>
+					<a href="#termination" class="block text-body hover:text-ink transition-colors py-1">7. Termination</a>
+					<a href="#governing-law" class="block text-body hover:text-ink transition-colors py-1">8. Governing Law</a>
+				</aside>
+
+				<!-- Main Legal Text -->
+				<article class="col-span-1 md:col-span-3 space-y-12 text-body text-sm leading-relaxed">
+					
+					<!-- 1. Acceptance of Terms -->
+					<div id="acceptance" class="bg-canvas border border-hairline rounded-xl p-6 sm:p-8 shadow-level-1 space-y-4">
+						<div class="flex items-center gap-3 text-ink">
+							<div class="w-8 h-8 rounded-lg bg-canvas-soft border border-hairline flex items-center justify-center">
+								<CheckCircle2 size={18} className="text-link" />
+							</div>
+							<h2 class="text-lg font-semibold tracking-tight">1. Acceptance of Terms</h2>
+						</div>
+						<p>
+							By registering, accessing, or using AI NoteBook ("Service"), you confirm that you have read, understood, and agreed to be bound by these Terms & Conditions and our <a href="/privacy" class="text-link underline hover:text-link-deep font-medium">Privacy Policy</a>.
+						</p>
+						<p>
+							If you are accepting these terms on behalf of an educational institution, organization, or business entity, you represent and warrant that you possess full legal authority to bind that entity.
+						</p>
+					</div>
+
+					<!-- 2. User Accounts -->
+					<div id="accounts" class="space-y-4 pt-4 border-t border-hairline">
+						<h2 class="text-xl font-semibold text-ink tracking-tight flex items-center gap-2">
+							<FileText size={20} className="text-ink" />
+							2. Account Registration & Security
+						</h2>
+						<p>To use full workspace capabilities, you must register for an account:</p>
+						<ul class="list-disc pl-6 space-y-2">
+							<li><strong>Accurate Information:</strong> You agree to provide true, accurate, and current registration information.</li>
+							<li><strong>Credential Confidentiality:</strong> You are solely responsible for maintaining the security of your authentication tokens and password.</li>
+							<li><strong>Account Activity:</strong> You remain accountable for all note management operations performed under your account.</li>
+						</ul>
+					</div>
+
+					<!-- 3. Acceptable Use -->
+					<div id="acceptable-use" class="space-y-4 pt-4 border-t border-hairline">
+						<h2 class="text-xl font-semibold text-ink tracking-tight flex items-center gap-2">
+							<ShieldAlert size={20} className="text-error" />
+							3. Acceptable Use Policy
+						</h2>
+						<p>You agree not to misuse the AI NoteBook platform. Specifically, you agree not to:</p>
+						<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-4">
+							<div class="p-4 bg-canvas border border-hairline rounded-lg">
+								<h3 class="font-semibold text-ink text-xs mb-1 font-mono">Prohibited Uploads</h3>
+								<p class="text-xs text-mute">Uploading malicious payloads, viruses, executable malware, or illegal copyright-infringing content.</p>
+							</div>
+							<div class="p-4 bg-canvas border border-hairline rounded-lg">
+								<h3 class="font-semibold text-ink text-xs mb-1 font-mono">System Integrity</h3>
+								<p class="text-xs text-mute">Attempting to bypass authentication mechanisms, reverse-engineer proprietary AI endpoints, or flood servers.</p>
+							</div>
+						</div>
+					</div>
+
+					<!-- 4. IP & Note Ownership -->
+					<div id="ownership" class="space-y-4 pt-4 border-t border-hairline">
+						<h2 class="text-xl font-semibold text-ink tracking-tight">
+							4. Intellectual Property & Note Ownership
+						</h2>
+						<p>
+							<strong>You retain 100% ownership of all content, notes, markdown documents, and study materials you store on AI NoteBook.</strong> We do not claim any copyright ownership or proprietary right over user-uploaded content.
+						</p>
+						<p>
+							AI NoteBook, its brand assets, UI designs, codebase, and logos are the sole intellectual property of NoteBook Inc. and protected under international copyright and trademark laws.
+						</p>
+					</div>
+
+					<!-- 5. Service Changes -->
+					<div id="modifications" class="space-y-4 pt-4 border-t border-hairline">
+						<h2 class="text-xl font-semibold text-ink tracking-tight">
+							5. Service Availability & Modifications
+						</h2>
+						<p>
+							We continually update and enhance AI NoteBook. We reserve the right to modify, update, or temporarily suspend features for routine maintenance. We will strive to provide advance notice for significant system updates.
+						</p>
+					</div>
+
+					<!-- 6. Limitation of Liability -->
+					<div id="liability" class="space-y-4 pt-4 border-t border-hairline">
+						<h2 class="text-xl font-semibold text-ink tracking-tight">
+							6. Limitation of Liability
+						</h2>
+						<p>
+							To the maximum extent permitted by applicable law, AI NoteBook and its developers shall not be liable for any indirect, incidental, special, or consequential damages resulting from lost note data, server outages, or unexpected service interruptions. Users are encouraged to maintain backup copies of critical notes using our Markdown export feature.
+						</p>
+					</div>
+
+					<!-- 7. Termination -->
+					<div id="termination" class="space-y-4 pt-4 border-t border-hairline">
+						<h2 class="text-xl font-semibold text-ink tracking-tight">
+							7. Account Termination
+						</h2>
+						<p>
+							You may close your account at any time via Settings. AI NoteBook reserves the right to terminate accounts that violate our Acceptable Use Policy or engage in fraudulent activities.
+						</p>
+					</div>
+
+					<!-- 8. Governing Law -->
+					<div id="governing-law" class="bg-canvas-soft-2 border border-hairline rounded-xl p-6 space-y-3">
+						<h2 class="text-base font-semibold text-ink tracking-tight flex items-center gap-2">
+							<HelpCircle size={18} className="text-link" />
+							8. Governing Law & Legal Questions
+						</h2>
+						<p class="text-xs text-body leading-relaxed">
+							These Terms & Conditions are governed by laws applicable to digital SaaS providers. For legal notices or contractual inquiries, email <a href="mailto:legal@notebook.app" class="text-link underline hover:text-link-deep font-mono">legal@notebook.app</a> or get in touch via our <a href="/contact" class="text-link underline hover:text-link-deep font-semibold">Contact Page</a>.
+						</p>
+					</div>
+
+				</article>
+
+			</div>
+		</section>
+	</main>
+
+	<Footer />
+</Layout>

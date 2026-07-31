@@ -4,6 +4,7 @@ import {
   CloudLightning, CloudCheck, CheckCircle2, RefreshCw
 } from 'lucide-react';
 import type { Subject, Note } from '../../utils/db';
+import InstallPrompt from '../pwa/InstallPrompt';
 
 interface TopNavProps {
   activeSubject: Subject | null;
@@ -90,7 +91,7 @@ export default function TopNav({
           )}
 
           <span className="font-semibold text-ink truncate max-w-[100px] xs:max-w-[140px] sm:max-w-[200px]">
-            {activeTab === 'files' ? 'Files' : (activeNote ? (activeNote.title || 'Untitled Note') : (activeTab === 'files' ? 'All Files' : 'All Notes'))}
+            {activeTab === 'files' ? 'Files' : (activeNote ? (activeNote.title || 'Untitled Note') : 'All Notes')}
           </span>
         </div>
       </div>
@@ -185,6 +186,9 @@ export default function TopNav({
             </button>
           </div>
         )}
+
+        {/* Install PWA Prompt */}
+        <InstallPrompt variant="topnav" />
 
         {/* Theme Toggle */}
         <button

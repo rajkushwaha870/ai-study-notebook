@@ -1,6 +1,71 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 import { Cpu, Languages, Terminal, ArrowRight, Check } from 'lucide-react';
+
+const faqSchema = {
+	"@context": "https://schema.org",
+	"@type": "FAQPage",
+	"mainEntity": [
+		{
+			"@type": "Question",
+			"name": "what is notebook ai",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": "<p><strong>Notebook AI</strong> (or AI NoteBook) is an intelligent online note-taking and academic assistant platform. It helps students, developers, and researchers organize study materials, draft rich markdown online notes, manage todo note checklists, and analyze uploaded content automatically.</p>"
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "what is open notebook ai tool",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": "<p>An <strong>open notebook ai tool</strong> is an accessible, privacy-focused digital workspace that enables users to freely store, structure, and query knowledge. AI NoteBook acts as an open, accessible AI notebook app providing seamless local storage, markdown export, and fast search across all personal notes.</p>"
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "what is an ai notebook",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": "<p>An <strong>ai notebook</strong> is a modern digital note-taking workspace enhanced by artificial intelligence capabilities. Unlike standard static notebooks, an AI notebook can summarize complex lecture slides, convert inline task items into trackable todo notes, organize subject categories, and query uploaded study materials instantly.</p>"
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "how to use notebook ai",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": "<p>Learning <strong>how to use notebook ai</strong> is simple: 1) Create a free workspace account. 2) Create subject folders to categorize your courses. 3) Start writing markdown notes or create todo note lists. 4) Use the study material uploader to attach PDFs, code files, or documents. 5) Use ⌘K command search or the AI Assistant to query and review your study notes instantly.</p>"
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "how notebook ai works",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": "<p>Understanding <strong>how notebook ai works</strong>: It pairs local-first rich markdown editing with background AI processing and cloud synchronization. When you write notes or upload study materials, the system parses the text, indexes keywords for instant search, and uses intelligent language models to assist with summarizing, formatting, and task tracking.</p>"
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "how to uploads study material",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": "<p>To learn <strong>how to uploads study material</strong> in AI NoteBook: Navigate to your Dashboard workspace, select a subject folder, and click the 'Upload Study Material' button or drag-and-drop your PDFs, text files, or lecture documents. The study material uploader will index the file automatically so you can reference and query it alongside your notes.</p>"
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "how to write notes",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": "<p>To learn <strong>how to write notes</strong> in AI NoteBook: 1) Open your Dashboard and click 'New Note'. 2) Select your subject category. 3) Use the built-in rich text editor to write markdown text, insert code snippets, mathematical LaTeX equations, or todo note checkboxes. Your notes will autosave automatically in real-time.</p>"
+			}
+		}
+	]
+};
 ---
 
 <Layout 
@@ -8,6 +73,7 @@ import { Cpu, Languages, Terminal, ArrowRight, Check } from 'lucide-react';
 	description="AI NoteBook is the ultimate online note taking and todo note application for students and professionals. Organize study materials with our smart study material uploader, instant search, and markdown editor."
 	keywords="AI NoteBook, ai notebook app, online note, todo note, study material uploader, markdown study notes, note taking app"
 	canonicalURL="https://notebook.app/"
+	faqSchema={faqSchema}
 >
 	<!-- Immediate client-side redirect if authenticated -->
 	<script is:inline>
@@ -27,59 +93,8 @@ import { Cpu, Languages, Terminal, ArrowRight, Check } from 'lucide-react';
 		})();
 	</script>
 
-	<!-- Navbar -->
-	<header class="sticky top-0 z-50 h-16 border-b border-hairline bg-canvas/80 backdrop-blur-md">
-		<div class="max-w-[1400px] h-full mx-auto px-6 flex items-center justify-between">
-			<!-- Logo -->
-			<div class="flex items-center gap-2">
-				<a href="/" class="flex items-center gap-2">
-					<div class="w-6 h-6 bg-primary text-on-primary flex items-center justify-center rounded-sm text-xs font-bold font-mono">
-						N
-					</div>
-					<span class="text-sm font-semibold tracking-tight text-ink font-sans">NoteBook.</span>
-				</a>
-			</div>
-
-			<!-- Nav links -->
-			<nav class="hidden md:flex items-center gap-6">
-				<a href="#features" class="text-xs text-body hover:text-ink transition-colors font-medium">Features</a>
-				<a href="#pricing" class="text-xs text-body hover:text-ink transition-colors font-medium">Pricing</a>
-				<a href="https://github.com" target="_blank" class="text-xs text-body hover:text-ink transition-colors font-medium">Open Source</a>
-			</nav>
-
-			<!-- Action buttons (Desktop/Tablet) -->
-			<div class="hidden sm:flex items-center gap-3">
-				<a href="/login" class="text-xs font-semibold text-body hover:text-ink transition-colors px-3 py-1.5 rounded-sm">
-					Log In
-				</a>
-				<a href="/signup" class="text-xs font-semibold bg-primary text-on-primary hover:opacity-90 transition-opacity px-4 py-1.5 rounded-sm shadow-level-2">
-					Sign Up
-				</a>
-			</div>
-
-			<!-- Mobile Hamburger Button -->
-			<button id="mobile-menu-btn" class="sm:hidden p-1.5 hover:bg-canvas-soft-2 text-mute hover:text-ink rounded-sm transition-colors cursor-pointer" aria-label="Toggle Menu">
-				<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
-			</button>
-		</div>
-	</header>
-
-	<!-- Mobile Menu Overlay -->
-	<div id="mobile-menu" class="hidden fixed inset-0 z-40 bg-canvas/98 pt-20 px-6 space-y-6">
-		<nav class="flex flex-col gap-6 text-sm font-medium">
-			<a href="#features" class="text-body hover:text-ink transition-colors py-2 border-b border-hairline">Features</a>
-			<a href="#pricing" class="text-body hover:text-ink transition-colors py-2 border-b border-hairline">Pricing</a>
-			<a href="https://github.com" target="_blank" class="text-body hover:text-ink transition-colors py-2 border-b border-hairline font-medium">Open Source</a>
-			<div class="pt-4 flex flex-col gap-3">
-				<a href="/login" class="text-center py-2.5 rounded-full border border-hairline hover:bg-canvas-soft-2 transition-colors font-semibold text-xs text-body">
-					Log In
-				</a>
-				<a href="/signup" class="text-center py-2.5 bg-primary text-on-primary hover:opacity-90 transition-opacity rounded-full font-semibold text-xs shadow-level-2">
-					Sign Up
-				</a>
-			</div>
-		</nav>
-	</div>
+	<!-- Header -->
+	<Header />
 
 	<!-- Main Body Wrapper -->
 	<main class="relative min-h-screen bg-canvas-soft">
@@ -427,6 +442,44 @@ import { Cpu, Languages, Terminal, ArrowRight, Check } from 'lucide-react';
 			</div>
 		</section>
 
+		<!-- FAQ Section (SEO Optimized with JSON-LD Schema) -->
+		<section id="faq" class="max-w-[1200px] mx-auto px-6 py-24 border-t border-hairline z-10 relative">
+			<div class="max-w-4xl mx-auto space-y-12">
+				<!-- Section Header -->
+				<div class="text-center space-y-3">
+					<span class="text-xs font-mono uppercase tracking-wider text-link font-semibold">FAQ</span>
+					<h2 class="text-2xl sm:text-3xl font-semibold tracking-tight text-ink">
+						Frequently Asked Questions about Notebook AI
+					</h2>
+					<p class="text-xs sm:text-sm text-body leading-relaxed max-w-xl mx-auto">
+						Everything you need to know about using our AI notebook app, uploading study materials, and organizing online notes.
+					</p>
+				</div>
+
+				<!-- FAQ Accordion Container -->
+				<div class="bg-canvas border border-hairline rounded-xl shadow-level-2 divide-y divide-hairline overflow-hidden">
+					{faqSchema.mainEntity.map((item, idx) => (
+						<details class="group p-6 cursor-pointer transition-colors hover:bg-canvas-soft/50">
+							<summary class="flex items-center justify-between font-semibold text-ink text-sm sm:text-base list-none select-none">
+								<span class="flex items-center gap-3">
+									<span class="w-6 h-6 rounded-full bg-canvas-soft-2 border border-hairline flex items-center justify-center text-xs font-mono text-mute group-open:bg-primary group-open:text-on-primary transition-colors">
+										{idx + 1}
+									</span>
+									{item.name}
+								</span>
+								<svg class="w-4 h-4 text-mute transition-transform group-open:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+								</svg>
+							</summary>
+							<div class="mt-4 pl-9 text-xs sm:text-sm text-body leading-relaxed space-y-2">
+								<Fragment set:html={item.acceptedAnswer.text} />
+							</div>
+						</details>
+					))}
+				</div>
+			</div>
+		</section>
+
 		<!-- Bottom Call-To-Action -->
 		<section class="max-w-[1200px] mx-auto px-6 py-24 text-center border-t border-hairline z-10 relative">
 			<h2 class="text-3xl sm:text-4xl font-semibold text-ink tracking-tight max-w-lg mx-auto mb-4">
@@ -442,71 +495,6 @@ import { Cpu, Languages, Terminal, ArrowRight, Check } from 'lucide-react';
 		</section>
 	</main>
 
-	<!-- Footer: mono eyebrows, clear grid links -->
-	<footer class="border-t border-hairline bg-canvas py-16 select-none z-10 relative">
-		<div class="max-w-[1200px] mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
-			<!-- Col 1 -->
-			<div class="space-y-3">
-				<h4 class="text-[10px] font-mono uppercase tracking-wider text-ink font-semibold">Resources</h4>
-				<ul class="space-y-2 text-xs text-body">
-					<li><a href="#" class="hover:text-ink transition-colors">Documentation</a></li>
-					<li><a href="#" class="hover:text-ink transition-colors">Release Notes</a></li>
-					<li><a href="#" class="hover:text-ink transition-colors">Design System</a></li>
-				</ul>
-			</div>
-			<!-- Col 2 -->
-			<div class="space-y-3">
-				<h4 class="text-[10px] font-mono uppercase tracking-wider text-ink font-semibold">Community</h4>
-				<ul class="space-y-2 text-xs text-body">
-					<li><a href="#" class="hover:text-ink transition-colors">GitHub Repository</a></li>
-					<li><a href="#" class="hover:text-ink transition-colors">Discord Server</a></li>
-					<li><a href="#" class="hover:text-ink transition-colors">Twitter / X</a></li>
-				</ul>
-			</div>
-			<!-- Col 3 -->
-			<div class="space-y-3">
-				<h4 class="text-[10px] font-mono uppercase tracking-wider text-ink font-semibold">Legal</h4>
-				<ul class="space-y-2 text-xs text-body">
-					<li><a href="#" class="hover:text-ink transition-colors">Privacy Policy</a></li>
-					<li><a href="#" class="hover:text-ink transition-colors">Terms of Service</a></li>
-					<li><a href="#" class="hover:text-ink transition-colors">Cookies Settings</a></li>
-				</ul>
-			</div>
-			<!-- Col 4 -->
-			<div class="space-y-4">
-				<div class="flex items-center gap-2">
-					<div class="w-5 h-5 bg-primary text-on-primary flex items-center justify-center rounded-sm text-[10px] font-mono font-bold">N</div>
-					<span class="text-xs font-semibold tracking-tight text-ink">NoteBook.</span>
-				</div>
-				<p class="text-[10px] text-mute font-mono">
-					&copy; 2026 NoteBook Inc. All rights reserved.
-				</p>
-			</div>
-		</div>
-	</footer>
-
-	<script>
-		const menuBtn = document.getElementById('mobile-menu-btn');
-		const mobileMenu = document.getElementById('mobile-menu');
-
-		if (menuBtn && mobileMenu) {
-			menuBtn.addEventListener('click', () => {
-				mobileMenu.classList.toggle('hidden');
-				if (mobileMenu.classList.contains('hidden')) {
-					document.body.style.overflow = '';
-				} else {
-					document.body.style.overflow = 'hidden';
-				}
-			});
-
-			// Close menu when clicking links
-			const links = mobileMenu.querySelectorAll('a');
-			links.forEach(link => {
-				link.addEventListener('click', () => {
-					mobileMenu.classList.add('hidden');
-					document.body.style.overflow = '';
-				});
-			});
-		}
-	</script>
+	<!-- Footer -->
+	<Footer />
 </Layout>

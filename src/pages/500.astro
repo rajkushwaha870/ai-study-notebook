@@ -1,0 +1,115 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { RefreshCw, Home, LifeBuoy, AlertTriangle, Terminal, CheckCircle2 } from 'lucide-react';
+
+interface Props {
+	error?: unknown;
+}
+
+const { error } = Astro.props;
+const errorMessage = error instanceof Error ? error.message : 'An unexpected server error occurred.';
+---
+
+<Layout 
+	title="500 - Server Error | AI NoteBook"
+	description="AI NoteBook encountered an internal server error. Please retry or contact support if the issue persists."
+	keywords="500, server error, internal error, AI NoteBook error"
+>
+	<Header currentPath="/500" />
+
+	<main class="relative min-h-[calc(100vh-4rem-14rem)] bg-canvas-soft flex flex-col justify-center py-16 overflow-hidden">
+		<!-- Mesh Gradient Background -->
+		<div class="mesh-gradient-container opacity-20"></div>
+
+		<div class="relative z-10 max-w-[1000px] mx-auto px-6 text-center space-y-8">
+			<!-- Eyebrow Badge -->
+			<div class="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-xs font-mono rounded-full">
+				<AlertTriangle size={14} className="text-amber-500" />
+				<span>500 ERROR // INTERNAL SERVER ERROR</span>
+			</div>
+
+			<!-- Giant Number Graphic & Main Headline -->
+			<div class="space-y-3">
+				<h1 class="text-7xl sm:text-9xl font-bold tracking-tighter text-ink/90 font-mono select-none">
+					5<span class="text-amber-500">0</span>0
+				</h1>
+				<h2 class="text-3xl sm:text-5xl font-semibold text-ink tracking-tight leading-tight max-w-2xl mx-auto">
+					Something went wrong on our end.
+				</h2>
+				<p class="text-sm sm:text-base text-body max-w-lg mx-auto leading-relaxed">
+					Our servers encountered an unexpected condition. Don't worry — your data is safe and our engineering team has been notified.
+				</p>
+			</div>
+
+			<!-- Action Buttons -->
+			<div class="flex flex-wrap items-center justify-center gap-4 pt-2">
+				<button 
+					id="reload-btn"
+					class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-on-primary hover:opacity-90 transition-opacity text-xs font-semibold rounded-full shadow-level-2 cursor-pointer"
+				>
+					<RefreshCw size={15} id="reload-icon" />
+					<span>Reload Page</span>
+				</button>
+				<a 
+					href="/" 
+					class="inline-flex items-center gap-2 px-6 py-3 bg-canvas border border-hairline text-ink hover:bg-canvas-soft-2 transition-colors text-xs font-semibold rounded-full shadow-level-1"
+				>
+					<Home size={15} />
+					<span>Return Home</span>
+				</a>
+				<a 
+					href="/contact" 
+					class="inline-flex items-center gap-2 px-6 py-3 bg-canvas border border-hairline text-ink hover:bg-canvas-soft-2 transition-colors text-xs font-semibold rounded-full shadow-level-1"
+				>
+					<LifeBuoy size={15} />
+					<span>Contact Support</span>
+				</a>
+			</div>
+
+			<!-- System Telemetry Terminal Box -->
+			<div class="pt-8 max-w-2xl mx-auto text-left">
+				<div class="bg-primary text-on-primary border border-hairline-strong/30 rounded-xl p-5 shadow-level-3 font-mono text-xs space-y-3">
+					<div class="flex items-center justify-between border-b border-white/10 pb-3 text-mute text-[11px]">
+						<div class="flex items-center gap-2">
+							<Terminal size={14} className="text-amber-400" />
+							<span class="text-on-primary font-semibold">System Diagnostics</span>
+						</div>
+						<span class="text-[10px] px-2 py-0.5 rounded bg-white/10 text-white/80">HTTP status 500</span>
+					</div>
+
+					<div class="space-y-1.5 text-slate-300">
+						<p><span class="text-emerald-400">[INFO]</span> Incident logged to monitoring stream.</p>
+						<p><span class="text-amber-400">[WARN]</span> {errorMessage}</p>
+						<p><span class="text-link font-semibold">[TRACE]</span> Reference ID: <span class="text-white">ERR-500-{Math.floor(100000 + Math.random() * 900000)}</span></p>
+					</div>
+
+					<div class="pt-2 border-t border-white/10 flex items-center justify-between text-[11px] text-mute">
+						<div class="flex items-center gap-1.5">
+							<CheckCircle2 size={12} className="text-emerald-400" />
+							<span>Database & Storage Operational</span>
+						</div>
+						<span class="text-white/40">Timestamp: {new Date().toISOString()}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<Footer />
+</Layout>
+
+<script>
+	const reloadBtn = document.getElementById('reload-btn');
+	const reloadIcon = document.getElementById('reload-icon');
+
+	if (reloadBtn) {
+		reloadBtn.addEventListener('click', () => {
+			if (reloadIcon) {
+				reloadIcon.classList.add('animate-spin');
+			}
+			window.location.reload();
+		});
+	}
+</script>

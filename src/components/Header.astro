@@ -1,0 +1,138 @@
+---
+import InstallPrompt from './pwa/InstallPrompt.tsx';
+
+interface Props {
+	currentPath?: string;
+}
+
+const { currentPath = Astro.url.pathname } = Astro.props;
+
+const isLinkActive = (path: string) => {
+	if (path.startsWith('/#')) return false;
+	if (path === '/' && currentPath === '/') return true;
+	if (path !== '/' && currentPath.startsWith(path)) return true;
+	return false;
+};
+---
+
+<!-- Navbar -->
+<header class="sticky top-0 z-50 h-16 border-b border-hairline bg-canvas/80 backdrop-blur-md">
+	<div class="max-w-[1400px] h-full mx-auto px-6 flex items-center justify-between">
+		<!-- Logo -->
+		<div class="flex items-center gap-2">
+			<a href="/" class="flex items-center gap-2 group">
+				<div class="w-6 h-6 bg-primary text-on-primary flex items-center justify-center rounded-sm text-xs font-bold font-mono group-hover:scale-105 transition-transform">
+					N
+				</div>
+				<span class="text-sm font-semibold tracking-tight text-ink font-sans">NoteBook.</span>
+			</a>
+		</div>
+
+		<!-- Nav links (Desktop) -->
+		<nav class="hidden md:flex items-center gap-6">
+			<a 
+				href="/#features" 
+				class="text-xs text-body hover:text-ink transition-colors font-medium"
+			>
+				Features
+			</a>
+			<a 
+				href="/#pricing" 
+				class="text-xs text-body hover:text-ink transition-colors font-medium"
+			>
+				Pricing
+			</a>
+			<a 
+				href="/about" 
+				class={`text-xs transition-colors font-medium ${isLinkActive('/about') ? 'text-ink font-semibold' : 'text-body hover:text-ink'}`}
+			>
+				About Us
+			</a>
+			<a 
+				href="/contact" 
+				class={`text-xs transition-colors font-medium ${isLinkActive('/contact') ? 'text-ink font-semibold' : 'text-body hover:text-ink'}`}
+			>
+				Contact Us
+			</a>
+			<a 
+				href="/#faq" 
+				class="text-xs text-body hover:text-ink transition-colors font-medium"
+			>
+				FAQ
+			</a>
+			<a 
+				href="https://github.com" 
+				target="_blank" 
+				rel="noopener noreferrer"
+				class="text-xs text-body hover:text-ink transition-colors font-medium"
+			>
+				Open Source
+			</a>
+		</nav>
+
+		<!-- Action buttons (Desktop/Tablet) -->
+		<div class="hidden sm:flex items-center gap-3">
+			<InstallPrompt client:only="react" variant="button" />
+			<a href="/login" class="text-xs font-semibold text-body hover:text-ink transition-colors px-3 py-1.5 rounded-sm">
+				Log In
+			</a>
+			<a href="/signup" class="text-xs font-semibold bg-primary text-on-primary hover:opacity-90 transition-opacity px-4 py-1.5 rounded-sm shadow-level-2">
+				Sign Up
+			</a>
+		</div>
+
+		<!-- Mobile Hamburger Button -->
+		<button id="mobile-menu-btn" class="sm:hidden p-1.5 hover:bg-canvas-soft-2 text-mute hover:text-ink rounded-sm transition-colors cursor-pointer" aria-label="Toggle Menu">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+		</button>
+	</div>
+</header>
+
+<!-- Mobile Menu Overlay -->
+<div id="mobile-menu" class="hidden fixed inset-0 z-40 bg-canvas/98 pt-20 px-6 space-y-6">
+	<nav class="flex flex-col gap-4 text-sm font-medium">
+		<a href="/#features" class="text-body hover:text-ink transition-colors py-2 border-b border-hairline">Features</a>
+		<a href="/#pricing" class="text-body hover:text-ink transition-colors py-2 border-b border-hairline">Pricing</a>
+		<a href="/about" class={`py-2 border-b border-hairline transition-colors ${isLinkActive('/about') ? 'text-ink font-semibold' : 'text-body hover:text-ink'}`}>About Us</a>
+		<a href="/contact" class={`py-2 border-b border-hairline transition-colors ${isLinkActive('/contact') ? 'text-ink font-semibold' : 'text-body hover:text-ink'}`}>Contact Us</a>
+		<a href="/privacy" class={`py-2 border-b border-hairline transition-colors ${isLinkActive('/privacy') ? 'text-ink font-semibold' : 'text-body hover:text-ink'}`}>Privacy Policy</a>
+		<a href="/terms" class={`py-2 border-b border-hairline transition-colors ${isLinkActive('/terms') ? 'text-ink font-semibold' : 'text-body hover:text-ink'}`}>Terms & Conditions</a>
+		<a href="/#faq" class="text-body hover:text-ink transition-colors py-2 border-b border-hairline">FAQ</a>
+		<a href="https://github.com" target="_blank" rel="noopener noreferrer" class="text-body hover:text-ink transition-colors py-2 border-b border-hairline font-medium">Open Source</a>
+		
+		<div class="pt-4 flex flex-col gap-3">
+			<InstallPrompt client:only="react" variant="button" className="w-full justify-center py-2.5 rounded-full" />
+			<a href="/login" class="text-center py-2.5 rounded-full border border-hairline hover:bg-canvas-soft-2 transition-colors font-semibold text-xs text-body">
+				Log In
+			</a>
+			<a href="/signup" class="text-center py-2.5 bg-primary text-on-primary hover:opacity-90 transition-opacity rounded-full font-semibold text-xs shadow-level-2">
+				Sign Up
+			</a>
+		</div>
+	</nav>
+</div>
+
+<script>
+	const menuBtn = document.getElementById('mobile-menu-btn');
+	const mobileMenu = document.getElementById('mobile-menu');
+
+	if (menuBtn && mobileMenu) {
+		menuBtn.addEventListener('click', () => {
+			mobileMenu.classList.toggle('hidden');
+			if (mobileMenu.classList.contains('hidden')) {
+				document.body.style.overflow = '';
+			} else {
+				document.body.style.overflow = 'hidden';
+			}
+		});
+
+		// Close menu when clicking links
+		const links = mobileMenu.querySelectorAll('a');
+		links.forEach(link => {
+			link.addEventListener('click', () => {
+				mobileMenu.classList.add('hidden');
+				document.body.style.overflow = '';
+			});
+		});
+	}
+</script>

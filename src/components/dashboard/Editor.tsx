@@ -224,7 +224,7 @@ export default function Editor({
           contentEditable
           onInput={handleContentInput}
           className="prose-editor min-h-[400px] text-sm text-ink placeholder:text-mute focus:outline-none"
-          placeholder="Start typing your study notes here..."
+          data-placeholder="Start typing your study notes here..."
         />
       </div>
     </div>

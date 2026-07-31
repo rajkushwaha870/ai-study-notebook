@@ -1,0 +1,184 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { Sparkles, Zap, ShieldCheck, LayoutGrid, Cpu, ArrowRight, Layers } from 'lucide-react';
+---
+
+<Layout 
+	title="About Us - AI NoteBook"
+	description="Discover the story behind AI NoteBook. We are on a mission to simplify academic study notes, todo lists, and document search through clean design and intelligent assistance."
+	keywords="About AI NoteBook, ai notebook app story, online note company, minimalist markdown notes"
+	canonicalURL="https://notebook.app/about"
+>
+	<Header currentPath="/about" />
+
+	<main class="relative min-h-screen bg-canvas-soft">
+		<!-- Mesh Gradient Background -->
+		<div class="mesh-gradient-container opacity-25"></div>
+
+		<!-- Hero Section -->
+		<section class="relative max-w-[1100px] mx-auto px-6 pt-20 pb-16 text-center z-10">
+			<div class="inline-flex items-center gap-2 px-3 py-1 bg-link-bg-soft/50 border border-[#d3e5ff]/40 text-link-deep text-[11px] font-mono rounded-full mb-6">
+				<Sparkles size={13} className="text-link" />
+				<span>OUR MISSION & PURPOSE</span>
+			</div>
+			
+			<h1 class="text-4xl sm:text-6xl font-semibold text-ink tracking-tight leading-[1.08] max-w-3xl mx-auto mb-6">
+				Building the cleanest digital notebook for the modern mind.
+			</h1>
+			
+			<p class="text-base sm:text-lg text-body max-w-2xl mx-auto leading-relaxed mb-12">
+				AI NoteBook was created out of a simple frustration: traditional note apps are either bloated with complex menus or lack the intelligent search needed for heavy study sessions.
+			</p>
+
+			<!-- Hero Key Metrics Grid -->
+			<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto select-none">
+				<div class="p-4 bg-canvas border border-hairline rounded-xl shadow-level-1 text-center">
+					<span class="block text-2xl sm:text-3xl font-semibold text-ink font-mono mb-1">50K+</span>
+					<span class="text-xs text-mute font-medium">Notes Created</span>
+				</div>
+				<div class="p-4 bg-canvas border border-hairline rounded-xl shadow-level-1 text-center">
+					<span class="block text-2xl sm:text-3xl font-semibold text-link font-mono mb-1">&lt;10ms</span>
+					<span class="text-xs text-mute font-medium">Search Latency</span>
+				</div>
+				<div class="p-4 bg-canvas border border-hairline rounded-xl shadow-level-1 text-center">
+					<span class="block text-2xl sm:text-3xl font-semibold text-ink font-mono mb-1">99.9%</span>
+					<span class="text-xs text-mute font-medium">Uptime SLA</span>
+				</div>
+				<div class="p-4 bg-canvas border border-hairline rounded-xl shadow-level-1 text-center">
+					<span class="block text-2xl sm:text-3xl font-semibold text-emerald-600 font-mono mb-1">100%</span>
+					<span class="text-xs text-mute font-medium">Privacy First</span>
+				</div>
+			</div>
+		</section>
+
+		<!-- Core Values & Pillars Section -->
+		<section class="relative max-w-[1100px] mx-auto px-6 py-16 z-10">
+			<div class="text-center space-y-3 mb-12">
+				<span class="text-xs font-mono uppercase tracking-wider text-link font-semibold">Core Philosophy</span>
+				<h2 class="text-2xl sm:text-4xl font-semibold text-ink tracking-tight">
+					Four principles guiding everything we build.
+				</h2>
+			</div>
+
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+				<!-- Pillar 1 -->
+				<div class="p-6 sm:p-8 bg-canvas border border-hairline rounded-xl shadow-level-2 space-y-3 hover:border-hairline-strong transition-colors">
+					<div class="w-10 h-10 rounded-lg bg-canvas-soft border border-hairline flex items-center justify-center text-ink">
+						<Zap size={20} className="text-link" />
+					</div>
+					<h3 class="text-lg font-semibold text-ink tracking-tight">Instant Keyboard-First Speed</h3>
+					<p class="text-xs sm:text-sm text-body leading-relaxed">
+						No waiting for heavy scripts to load. Open your notes instantly, trigger global ⌘K command search in milliseconds, and write markdown without touching your mouse.
+					</p>
+				</div>
+
+				<!-- Pillar 2 -->
+				<div class="p-6 sm:p-8 bg-canvas border border-hairline rounded-xl shadow-level-2 space-y-3 hover:border-hairline-strong transition-colors">
+					<div class="w-10 h-10 rounded-lg bg-canvas-soft border border-hairline flex items-center justify-center text-ink">
+						<LayoutGrid size={20} className="text-ink" />
+					</div>
+					<h3 class="text-lg font-semibold text-ink tracking-tight">Notion Clarity meets Vercel Precision</h3>
+					<p class="text-xs sm:text-sm text-body leading-relaxed">
+						We believe software should feel fast, crisp, and beautifully understated. High contrast typography, mono captions, and intentional color accents keep your mind focused.
+					</p>
+				</div>
+
+				<!-- Pillar 3 -->
+				<div class="p-6 sm:p-8 bg-canvas border border-hairline rounded-xl shadow-level-2 space-y-3 hover:border-hairline-strong transition-colors">
+					<div class="w-10 h-10 rounded-lg bg-canvas-soft border border-hairline flex items-center justify-center text-ink">
+						<Cpu size={20} className="text-violet-600" />
+					</div>
+					<h3 class="text-lg font-semibold text-ink tracking-tight">Contextual AI Assistance</h3>
+					<p class="text-xs sm:text-sm text-body leading-relaxed">
+						Artificial intelligence shouldn't get in your way. Our AI assistant analyzes uploaded lecture notes and PDFs in the background, providing automatic summaries when you ask.
+					</p>
+				</div>
+
+				<!-- Pillar 4 -->
+				<div class="p-6 sm:p-8 bg-canvas border border-hairline rounded-xl shadow-level-2 space-y-3 hover:border-hairline-strong transition-colors">
+					<div class="w-10 h-10 rounded-lg bg-canvas-soft border border-hairline flex items-center justify-center text-ink">
+						<ShieldCheck size={20} className="text-emerald-500" />
+					</div>
+					<h3 class="text-lg font-semibold text-ink tracking-tight">Zero Lock-In & Open Export</h3>
+					<p class="text-xs sm:text-sm text-body leading-relaxed">
+						Your notes are your intellectual property. Export your entire notebook into standard Markdown (`.md`) files at any time with a single click.
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Tech Stack & Architecture -->
+		<section class="relative max-w-[1100px] mx-auto px-6 py-16 border-t border-hairline z-10">
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+				<div class="space-y-4">
+					<span class="text-xs font-mono uppercase tracking-wider text-link font-semibold">Engineered For Performance</span>
+					<h2 class="text-2xl sm:text-3xl font-semibold text-ink tracking-tight">
+						Multi-Page Architecture for Maximum SEO and Speed.
+					</h2>
+					<p class="text-xs sm:text-sm text-body leading-relaxed">
+						AI NoteBook is engineered as a modern Multi-Page Application (MPA) using <strong>Astro 5</strong>, <strong>Tailwind CSS v4</strong>, and <strong>Supabase</strong>. Pages load with near-zero JavaScript bundle sizes, giving search engines complete visibility into content.
+					</p>
+					<div class="flex items-center gap-3 pt-2">
+						<a href="https://github.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 bg-canvas border border-hairline hover:bg-canvas-soft-2 text-ink text-xs font-semibold rounded-md shadow-level-1 transition-colors">
+							<Layers size={14} />
+							View Open Source Stack
+						</a>
+					</div>
+				</div>
+
+				<div class="bg-canvas border border-hairline rounded-xl p-6 shadow-level-3 space-y-4 font-mono text-xs select-none">
+					<div class="flex items-center justify-between border-b border-hairline pb-3">
+						<span class="text-mute">// System Architecture</span>
+						<span class="text-emerald-500 text-[10px]">VERIFIED</span>
+					</div>
+					<div class="space-y-2 text-ink">
+						<div class="flex justify-between">
+							<span class="text-mute">Framework:</span>
+							<span>Astro (SSR / MPA)</span>
+						</div>
+						<div class="flex justify-between">
+							<span class="text-mute">Styling Engine:</span>
+							<span>Tailwind CSS v4</span>
+						</div>
+						<div class="flex justify-between">
+							<span class="text-mute">Database & Auth:</span>
+							<span>Supabase PostgreSQL</span>
+						</div>
+						<div class="flex justify-between">
+							<span class="text-mute">AI Model Engine:</span>
+							<span>Google Gemini API</span>
+						</div>
+						<div class="flex justify-between">
+							<span class="text-mute">Edge CDN:</span>
+							<span>Standalone Node Server</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Bottom Call-To-Action -->
+		<section class="max-w-[1100px] mx-auto px-6 py-20 text-center border-t border-hairline z-10 relative">
+			<h2 class="text-3xl sm:text-4xl font-semibold text-ink tracking-tight max-w-lg mx-auto mb-4">
+				Experience the difference yourself.
+			</h2>
+			<p class="text-xs sm:text-sm text-body max-w-sm mx-auto mb-8 leading-relaxed">
+				Join thousands of students and engineers keeping clean study notes today.
+			</p>
+			<div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+				<a href="/signup" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 bg-primary text-on-primary rounded-full hover:opacity-90 active:scale-[0.98] transition-all font-semibold text-sm h-12 shadow-level-3 cursor-pointer">
+					Get Started Free
+					<ArrowRight size={16} />
+				</a>
+				<a href="/contact" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 bg-canvas text-ink border border-hairline rounded-full hover:bg-canvas-soft-2 transition-colors font-semibold text-sm h-12 shadow-level-1 cursor-pointer">
+					Contact Support
+				</a>
+			</div>
+		</section>
+
+	</main>
+
+	<Footer />
+</Layout>

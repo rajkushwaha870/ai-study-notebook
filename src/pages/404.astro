@@ -1,0 +1,137 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { FileQuestion, Home, LayoutDashboard, Sparkles, Search, BookOpen, LifeBuoy } from 'lucide-react';
+---
+
+<Layout 
+	title="404 - Page Not Found | AI NoteBook"
+	description="The page you are looking for does not exist or has been moved. Return to AI NoteBook home or dashboard."
+	keywords="404, page not found, AI NoteBook error"
+>
+	<Header currentPath="/404" />
+
+	<main class="relative min-h-[calc(100vh-4rem-14rem)] bg-canvas-soft flex flex-col justify-center py-16 overflow-hidden">
+		<!-- Mesh Gradient Background -->
+		<div class="mesh-gradient-container opacity-20"></div>
+
+		<div class="relative z-10 max-w-[1000px] mx-auto px-6 text-center space-y-8">
+			<!-- Eyebrow Badge -->
+			<div class="inline-flex items-center gap-2 px-3 py-1 bg-error-soft/60 border border-error/20 text-error-deep text-xs font-mono rounded-full">
+				<FileQuestion size={14} className="text-error" />
+				<span>404 ERROR // PAGE NOT FOUND</span>
+			</div>
+
+			<!-- Giant Number Graphic & Main Headline -->
+			<div class="space-y-3">
+				<h1 class="text-7xl sm:text-9xl font-bold tracking-tighter text-ink/90 font-mono select-none">
+					4<span class="text-link">0</span>4
+				</h1>
+				<h2 class="text-3xl sm:text-5xl font-semibold text-ink tracking-tight leading-tight max-w-2xl mx-auto">
+					Lost in thought. This page doesn't exist.
+				</h2>
+				<p class="text-sm sm:text-base text-body max-w-lg mx-auto leading-relaxed">
+					The page you requested may have been moved, renamed, or deleted. Check the URL or navigate back to your workspace.
+				</p>
+			</div>
+
+			<!-- Action Buttons -->
+			<div class="flex flex-wrap items-center justify-center gap-4 pt-2">
+				<a 
+					href="/" 
+					class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-on-primary hover:opacity-90 transition-opacity text-xs font-semibold rounded-full shadow-level-2"
+				>
+					<Home size={15} />
+					<span>Return Home</span>
+				</a>
+				<a 
+					href="/dashboard" 
+					class="inline-flex items-center gap-2 px-6 py-3 bg-canvas border border-hairline text-ink hover:bg-canvas-soft-2 transition-colors text-xs font-semibold rounded-full shadow-level-1"
+				>
+					<LayoutDashboard size={15} />
+					<span>Go to Dashboard</span>
+				</a>
+			</div>
+
+			<!-- Helpful Destinations Grid -->
+			<div class="pt-12 text-left max-w-3xl mx-auto">
+				<div class="text-center mb-6">
+					<span class="text-xs font-mono uppercase tracking-wider text-mute">Recommended Destinations</span>
+				</div>
+
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+					<a 
+						href="/dashboard" 
+						class="p-5 bg-canvas border border-hairline rounded-xl hover:border-hairline-strong transition-all shadow-level-1 group flex items-start gap-4"
+					>
+						<div class="p-2.5 bg-canvas-soft border border-hairline rounded-lg text-ink group-hover:scale-105 transition-transform">
+							<BookOpen size={18} />
+						</div>
+						<div class="space-y-1">
+							<h3 class="text-sm font-semibold text-ink group-hover:text-link transition-colors flex items-center gap-1.5">
+								My Workspace
+							</h3>
+							<p class="text-xs text-body leading-relaxed">
+								Access your study notes, todo lists, and uploaded materials.
+							</p>
+						</div>
+					</a>
+
+					<a 
+						href="/ai" 
+						class="p-5 bg-canvas border border-hairline rounded-xl hover:border-hairline-strong transition-all shadow-level-1 group flex items-start gap-4"
+					>
+						<div class="p-2.5 bg-canvas-soft border border-hairline rounded-lg text-link group-hover:scale-105 transition-transform">
+							<Sparkles size={18} />
+						</div>
+						<div class="space-y-1">
+							<h3 class="text-sm font-semibold text-ink group-hover:text-link transition-colors flex items-center gap-1.5">
+								AI Assistant
+							</h3>
+							<p class="text-xs text-body leading-relaxed">
+								Chat with AI to summarize docs, create quizzes, and explain concepts.
+							</p>
+						</div>
+					</a>
+
+					<a 
+						href="/about" 
+						class="p-5 bg-canvas border border-hairline rounded-xl hover:border-hairline-strong transition-all shadow-level-1 group flex items-start gap-4"
+					>
+						<div class="p-2.5 bg-canvas-soft border border-hairline rounded-lg text-ink group-hover:scale-105 transition-transform">
+							<Search size={18} />
+						</div>
+						<div class="space-y-1">
+							<h3 class="text-sm font-semibold text-ink group-hover:text-link transition-colors flex items-center gap-1.5">
+								About AI NoteBook
+							</h3>
+							<p class="text-xs text-body leading-relaxed">
+								Learn more about our mission, privacy standards, and platform.
+							</p>
+						</div>
+					</a>
+
+					<a 
+						href="/contact" 
+						class="p-5 bg-canvas border border-hairline rounded-xl hover:border-hairline-strong transition-all shadow-level-1 group flex items-start gap-4"
+					>
+						<div class="p-2.5 bg-canvas-soft border border-hairline rounded-lg text-ink group-hover:scale-105 transition-transform">
+							<LifeBuoy size={18} />
+						</div>
+						<div class="space-y-1">
+							<h3 class="text-sm font-semibold text-ink group-hover:text-link transition-colors flex items-center gap-1.5">
+								Support & Contact
+							</h3>
+							<p class="text-xs text-body leading-relaxed">
+								Need assistance? Reach out to our customer support team.
+							</p>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<Footer />
+</Layout>
