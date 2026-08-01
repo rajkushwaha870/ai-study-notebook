@@ -82,9 +82,11 @@ export default function Sidebar({
       {/* Brand Logo Header */}
       <div className="flex items-center justify-between h-16 px-4 border-b border-hairline shrink-0 bg-canvas-soft">
         <div className="flex items-center gap-2 font-semibold">
-          <div className="w-6 h-6 bg-primary text-on-primary flex items-center justify-center rounded-sm text-xs font-bold tracking-tight shadow-sm font-mono">
-            N
-          </div>
+          <img
+            src="/favicon.svg"
+            alt="NoteBook Logo"
+            className="w-6 h-6 rounded-sm object-contain"
+          />
           {!isCollapsed && (
             <span className="text-sm font-semibold tracking-tight text-ink">
               NoteBook.
