@@ -9,10 +9,11 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "generate-types": "wrangler types"
   },
   "dependencies": {
-    "@astrojs/node": "^11.0.2",
+    "@astrojs/cloudflare": "^14.1.7",
     "@astrojs/react": "^6.0.1",
     "@google/genai": "^2.10.0",
     "@supabase/supabase-js": "^2.110.7",
@@ -25,7 +26,8 @@
     "postgres": "^3.4.9",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "tailwindcss": "^4.3.2"
+    "tailwindcss": "^4.3.2",
+    "wrangler": "^4.118.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
