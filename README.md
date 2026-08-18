@@ -35,10 +35,6 @@ The goal of the project is to provide students with a single workspace where the
 
   * View and manage PDF study material.
 
-* 🖼️ **Image OCR**
-
-  * Extract text from images for easier study and processing.
-
 * 📱 **PWA Support**
 
   * Installable and responsive application experience.
